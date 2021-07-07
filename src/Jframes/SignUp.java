@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Jframes;
 
 import java.sql.Connection;
@@ -13,7 +9,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Tohid Shop
+ * @author sina
  */
 public class SignUp extends javax.swing.JFrame {
 
@@ -50,12 +46,18 @@ public class SignUp extends javax.swing.JFrame {
                 
                 if(updateRowCount>0){
                     JOptionPane.showMessageDialog(this,"Recorded Innserted Successfuly");
+                    
+                    Login l= new Login();
+                    l.show();
+                    this.hide();
+                    
                 }else{
                     JOptionPane.showMessageDialog(this,"Recorded Insertion Failur");
                 }
         }
         catch(Exception e){
-            JOptionPane.showMessageDialog(this,"erroor");
+            e.printStackTrace();
+            //JOptionPane.showMessageDialog(this,"erroor");
         }
     }
     
@@ -94,37 +96,35 @@ public class SignUp extends javax.swing.JFrame {
     public boolean ChekUsername(){
         
          String name=txt_username.getText();
+         
+         //make a variable for result
          boolean isExist=false;
      
         
         try{
-             // Connection con=databaseconnection.getConnection();
-              Class.forName("com.mysql.jdbc.Driver");
-              Connection connect= (Connection)DriverManager.getConnection("jdbc:mysql://localhost:3306/Library_Management","root","34313431");
-              String sql="select * from users wheere name=?";
-              PreparedStatement ps=connect.prepareStatement(sql);
+             Connection con=databaseconnection.getConnection();
+             // Class.forName("com.mysql.jdbc.Driver");
+              //Connection connect= (Connection)DriverManager.getConnection("jdbc:mysql://localhost:3306/Library_Management","root","34313431");
+              String sql="select * from users where name=?";
+              PreparedStatement ps=con.prepareStatement(sql);
               
               ps.setString(1,name);
               ResultSet rs= ps.executeQuery();
               
-              //this mean that username already exit
-              
+              //this mean that username already exist
               if(rs.next()){
                   isExist= true;
-              
               }
               else{
                   isExist=false;
-                 
               }
-
         }
         catch(Exception e){
-            e.printStackTrace();
-                //JOptionPane.showMessageDialog(this,"Error");
+            //e.printStackTrace();
+               JOptionPane.showMessageDialog(this,"Error");
         }
         return isExist;
-      
+
     }
     
   //-----------------------------------------------------------------------------------------------------------------------------
@@ -273,6 +273,7 @@ public class SignUp extends javax.swing.JFrame {
 
         txt_contact.setBackground(new java.awt.Color(102, 102, 255));
         txt_contact.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_contact.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         txt_contact.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_contactActionPerformed(evt);
@@ -282,6 +283,7 @@ public class SignUp extends javax.swing.JFrame {
 
         txt_username.setBackground(new java.awt.Color(102, 102, 255));
         txt_username.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_username.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         txt_username.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txt_usernameFocusLost(evt);
@@ -296,10 +298,12 @@ public class SignUp extends javax.swing.JFrame {
 
         txt_password.setBackground(new java.awt.Color(102, 102, 255));
         txt_password.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_password.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         jPanel2.add(txt_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 380, 350, 40));
 
         txt_email.setBackground(new java.awt.Color(102, 102, 255));
         txt_email.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_email.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         jPanel2.add(txt_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 490, 350, 40));
 
         txt_username4.setBackground(new java.awt.Color(102, 102, 255));
@@ -322,9 +326,9 @@ public class SignUp extends javax.swing.JFrame {
     private void rSMaterialButtonCircle2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle2ActionPerformed
         
         if (ValidateSignup()==true){
-           
-            if (ChekUsername()==false){
-                InsertSignupDetails();  
+            //this mean that username not already exist
+                if (ChekUsername()==false){
+                    InsertSignupDetails();  
             }
             
             else{
@@ -345,11 +349,12 @@ public class SignUp extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void txt_usernameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_usernameFocusLost
-     /*     
-        if(ChekUsername()==true){
+      
+        //this mean that username already exist   
+          if(ChekUsername()==true){
                 JOptionPane.showMessageDialog(this,"This Username Already Exist");
           
-        }  */
+        }  
     }//GEN-LAST:event_txt_usernameFocusLost
 
     private void txt_usernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_usernameActionPerformed

@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 
 /**
  *
- * @author Tohid Shop
+ * @author sina
  */
 public class databaseconnection {
     
