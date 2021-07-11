@@ -17,7 +17,7 @@ public class databaseconnection {
          
          try{
                    Class.forName("com.mysql.jdbc.Driver");
-                   con= (Connection)DriverManager.getConnection("jdbc:mysql://localhost:3306/library_manage","root","34313431");
+                   con= (Connection)DriverManager.getConnection("jdbc:mysql://localhost:3306/library","root","oracle123");
          }
          catch(Exception e){
              e.printStackTrace();
