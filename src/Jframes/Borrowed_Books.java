@@ -1,7 +1,6 @@
 /*
 in form be ma tamamie ketab haye amanat dade shode ro namayesh mide
-*/
-
+ */
 package Jframes;
 
 import java.sql.Connection;
@@ -13,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author sina
- * 
+ *
  */
 public class Borrowed_Books extends javax.swing.JFrame {
 
@@ -21,48 +20,43 @@ public class Borrowed_Books extends javax.swing.JFrame {
      * Creates new form Borrowed_Books
      */
     DefaultTableModel model;
-    
+
     public Borrowed_Books() {
         initComponents();
         setBorrowBookDetailsToTable();
     }
-    
+
     //to set the book details into the table
-    public void setBorrowBookDetailsToTable(){
-            
-            
-            try{
-                
-                Connection con=databaseconnection.getConnection();
-                Statement st=con.createStatement();
-                ResultSet rs= st.executeQuery("select * from lending_book where status= '"+"pending"+"'");
-                
-                while(rs.next()){
-                        
-                        String id          =rs.getString("id");
-                        String bookName   = rs.getString("book_name");
-                        String studentName = rs.getString("student_name");
-                        String lendingDate       = rs.getString("borrow_date");
-                        String returnDate      = rs.getString("return_book_datte");
-                        String status       = rs.getString("status");
-                        
-                        
-                        Object[] obj= {id,bookName,studentName,lendingDate,returnDate,status};
-                        
-                        model =(DefaultTableModel)tbl_borrowBookDetails.getModel();
-                        model.addRow(obj);
-                    
-                }
-                
+    public void setBorrowBookDetailsToTable() {
+
+        try {
+
+            Connection con = databaseconnection.getConnection();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("select * from lending_book where status= '" + "pending" + "'");
+
+            while (rs.next()) {
+
+                String id = rs.getString("id");
+                String bookName = rs.getString("book_name");
+                String studentName = rs.getString("student_name");
+                String lendingDate = rs.getString("borrow_date");
+                String returnDate = rs.getString("return_book_datte");
+                String status = rs.getString("status");
+
+                Object[] obj = {id, bookName, studentName, lendingDate, returnDate, status};
+
+                model = (DefaultTableModel) tbl_borrowBookDetails.getModel();
+                model.addRow(obj);
+
             }
-            catch(Exception e){
-                    
-                JOptionPane.showMessageDialog(this,"Error");
-            }
-              
-            
+
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(this, "Error");
         }
-    
+
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -207,7 +201,7 @@ public class Borrowed_Books extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
-        Home h= new Home();
+        Home h = new Home();
         h.show();
         this.hide();
     }//GEN-LAST:event_jLabel10MouseClicked
@@ -222,7 +216,7 @@ public class Borrowed_Books extends javax.swing.JFrame {
 
     private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
 
-        Home h=new Home();
+        Home h = new Home();
         h.show();
         this.hide();
     }//GEN-LAST:event_jPanel8MouseClicked

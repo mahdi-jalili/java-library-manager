@@ -1,4 +1,3 @@
-
 package Jframes;
 
 import java.sql.Connection;
@@ -18,116 +17,112 @@ public class SignUp extends javax.swing.JFrame {
      */
     public SignUp() {
         initComponents();
-        
-        
-        
+
     }
-    
- //-----------------------------------------------------------------------------------------------------------------------------    
-      //method to insert valius into users tabale
-    
+
+    //-----------------------------------------------------------------------------------------------------------------------------    
+    //method to insert valius into users tabale
     public void InsertSignupDetails() {
-        String name=txt_username.getText();
-        String pwd=txt_password.getText();
-        String email=txt_email.getText();
-        String contact=txt_contact.getText();
-        
-        try{
-                Connection con=databaseconnection.getConnection();
-                String sql= "insert into users(name,password,email,contact) values (?,?,?,?)";
-                PreparedStatement ps= con.prepareStatement(sql);
-                
-                ps.setString(1,name);
-                ps.setString(2,pwd);
-                ps.setString(3,email);
-                ps.setString(4,contact);
-                
-                int updateRowCount=ps.executeUpdate();
-                
-                if(updateRowCount>0){
-                    JOptionPane.showMessageDialog(this,"Recorded Innserted Successfuly");
-                    
-                    Login l= new Login();
-                    l.show();
-                    this.hide();
-                    
-                }else{
-                    JOptionPane.showMessageDialog(this,"Recorded Insertion Failur");
-                }
-        }
-        catch(Exception e){
+        String name = txt_username.getText();
+        String pwd = txt_password.getText();
+        String email = txt_email.getText();
+        String contact = txt_contact.getText();
+
+        try {
+            Connection con = databaseconnection.getConnection();
+            String sql = "insert into users(name,password,email,contact) values (?,?,?,?)";
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setString(1, name);
+            ps.setString(2, pwd);
+            ps.setString(3, email);
+            ps.setString(4, contact);
+
+            int updateRowCount = ps.executeUpdate();
+
+            if (updateRowCount > 0) {
+                JOptionPane.showMessageDialog(this, "Recorded Innserted Successfuly ,Please Complete your Profile In the Home Page");
+
+                Login l = new Login();
+                l.show();
+                this.hide();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Recorded Insertion Failur");
+            }
+        } catch (Exception e) {
             e.printStackTrace();
             //JOptionPane.showMessageDialog(this,"erroor");
         }
     }
-    
- //-----------------------------------------------------------------------------------------------------------------------------
-    
-    public boolean ValidateSignup(){
-        String name=txt_username.getText();
-        String pwd=txt_password.getText();
-        String email=txt_email.getText();
-        String contact=txt_contact.getText();
-        
-         if(name.equals("")){
-            JOptionPane.showMessageDialog(this,"Pleas Enter the Username");
-            return false;
+
+    //-----------------------------------------------------------------------------------------------------------------------------
+    public boolean ValidateSignup() {
+        String name = txt_username.getText();
+        String pwd = txt_password.getText();
+        String email = txt_email.getText();
+        String contact = txt_contact.getText();
+        EmailChecker theEmail = new EmailChecker();
+        boolean isExist = true;
+        if (name.equals("")) {
+            JOptionPane.showMessageDialog(this, "Pleas Enter the Username");
+            isExist = false;
         }
-          if(pwd.equals("")){
-            JOptionPane.showMessageDialog(this,"Pleas Enter the Password");
-            return false;
+        if (pwd.equals("")) {
+            JOptionPane.showMessageDialog(this, "Pleas Enter the Password");
+            isExist = false;
         }
-          if(email.equals("") || !email.matches("^.+@.+\\..+$")){
-            JOptionPane.showMessageDialog(this,"Pleas Enter the Valid Email");
-            return false;
+        if (email.equals("")) {
+            JOptionPane.showMessageDialog(this, "Pleas Enter the Email");
+            isExist = false;
+        } else if (!email.matches("^.+@.+\\..+$")) {
+            JOptionPane.showMessageDialog(this, "Pleas Enter the Valid Email");
+            isExist = false;
+        } else if (!theEmail.checker(email)) {
+            JOptionPane.showMessageDialog(this, "Pleas Enter the available Email");
+            isExist = false;
         }
-          if(contact.equals("")){
-            JOptionPane.showMessageDialog(this,"Pleas Enter Your Contact Number");
-            return false;
+        if (contact.equals("")) {
+            JOptionPane.showMessageDialog(this, "Pleas Enter Your Contact Number");
+            isExist = false;
         }
-        
-        return true;
+        return isExist;
     }
-    
-    
- //-----------------------------------------------------------------------------------------------------------------------------   
+
+    //-----------------------------------------------------------------------------------------------------------------------------   
     //chek for repet username
- 
-    public boolean ChekUsername(){
-        
-         String name=txt_username.getText();
-         
-         //make a variable for result
-         boolean isExist=false;
-     
-        
-        try{
-             Connection con=databaseconnection.getConnection();
-             // Class.forName("com.mysql.jdbc.Driver");
-              //Connection connect= (Connection)DriverManager.getConnection("jdbc:mysql://localhost:3306/Library_Management","root","34313431");
-              String sql="select * from users where name=?";
-              PreparedStatement ps=con.prepareStatement(sql);
-              
-              ps.setString(1,name);
-              ResultSet rs= ps.executeQuery();
-              
-              //this mean that username already exist
-              if(rs.next()){
-                  isExist= true;
-              }
-              else{
-                  isExist=false;
-              }
-        }
-        catch(Exception e){
+    public boolean ChekUsername() {
+
+        String name = txt_username.getText();
+
+        //make a variable for result
+        boolean isExist = false;
+
+        try {
+            Connection con = databaseconnection.getConnection();
+            // Class.forName("com.mysql.jdbc.Driver");
+            //Connection connect= (Connection)DriverManager.getConnection("jdbc:mysql://localhost:3306/Library_Management","root","34313431");
+            String sql = "select * from users where name=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+
+            //this mean that username already exist
+            if (rs.next()) {
+                isExist = true;
+            } else {
+                isExist = false;
+            }
+        } catch (Exception e) {
             //e.printStackTrace();
-               JOptionPane.showMessageDialog(this,"Error");
+            JOptionPane.showMessageDialog(this, "Error");
         }
         return isExist;
 
     }
-    
-  //-----------------------------------------------------------------------------------------------------------------------------
+
+    //-----------------------------------------------------------------------------------------------------------------------------
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -313,34 +308,31 @@ public class SignUp extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
- //-----------------------------------------------------------------------------------------------------------------------------
-    
+    //-----------------------------------------------------------------------------------------------------------------------------
+
     private void rSMaterialButtonCircle2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle2ActionPerformed
-        
-        if (ValidateSignup()==true){
+
+        if (ValidateSignup() == true) {
             //this mean that username not already exist
-                if (ChekUsername()==false){
-                    InsertSignupDetails();  
+            if (ChekUsername() == false) {
+                InsertSignupDetails();
+            } else {
+                JOptionPane.showMessageDialog(this, "This Username Already Exist");
             }
-            
-            else{
-                JOptionPane.showMessageDialog(this,"This Username Already Exist");                
-            }   
         }
     }//GEN-LAST:event_rSMaterialButtonCircle2ActionPerformed
 
 //-----------------------------------------------------------------------------------------------------------------------------
-    
-    
+
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-         System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void txt_usernameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_usernameFocusLost
 
         //this mean that username already exist
-        if(ChekUsername()==true){
-            JOptionPane.showMessageDialog(this,"This Username Already Exist");
+        if (ChekUsername() == true) {
+            JOptionPane.showMessageDialog(this, "This Username Already Exist");
 
         }
     }//GEN-LAST:event_txt_usernameFocusLost

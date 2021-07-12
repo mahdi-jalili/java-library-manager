@@ -11,11 +11,18 @@ import javax.swing.JOptionPane;
  *
  * @author sina
  */
+
+    
+
 public class Login extends javax.swing.JFrame {
 
     /**
      * Creates new form SignUp
      */
+    
+    public static String uN="";
+    
+    
     public Login() {
         initComponents();
         
@@ -60,19 +67,31 @@ public class Login extends javax.swing.JFrame {
               ps.setString(1,name);
               ps.setString(2,pwd);
               
-              ResultSet rs=ps.executeQuery();
+              uN= txt_username.getText();
               
-              //this means theere is this username and password in our databas :)
+              ResultSet rs=ps.executeQuery();
+        
+              //baraye moshakhas kardane masire admin va user in shart ro gharar midim
+         
+          if (txt_username.getText().equals("admin") && txt_password.getText().equals("admin")) {
+                Home h=new Home();
+                h.show();
+                this.hide();
+             }
+            else{
+                //this means theere is this username and password in our databas :)
               if(rs.next()){
                   JOptionPane.showMessageDialog(this,"Login sucssecfuly");
                     
-                  Home h= new Home();
+                  Home_user h= new Home_user();
                   h.show();
                   this.hide();
-              }
+               }
               else {
                   JOptionPane.showMessageDialog(this,"Incorrect Usename Or Password");
               }
+            
+            }
         }
         catch(Exception e){
             JOptionPane.showMessageDialog(this,"Error");
@@ -117,12 +136,12 @@ public class Login extends javax.swing.JFrame {
         rSMaterialButtonCircle1 = new rojerusan.RSMaterialButtonCircle();
         rSMaterialButtonCircle2 = new rojerusan.RSMaterialButtonCircle();
         txt_username = new app.bolivia.swing.JCTextField();
-        txt_password = new app.bolivia.swing.JCTextField();
         jLabel16 = new javax.swing.JLabel();
+        txt_password = new rojerusan.RSPasswordTextPlaceHolder();
+        password_chekBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(1200, 600));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -216,15 +235,24 @@ public class Login extends javax.swing.JFrame {
         });
         jPanel2.add(txt_username, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 220, 220, 40));
 
-        txt_password.setBackground(new java.awt.Color(102, 102, 255));
-        txt_password.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
-        txt_password.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jPanel2.add(txt_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 320, 220, 40));
-
         jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 25)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Login Page");
         jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 70, 130, 40));
+
+        txt_password.setBackground(new java.awt.Color(102, 102, 255));
+        txt_password.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_password.setForeground(new java.awt.Color(0, 0, 0));
+        txt_password.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jPanel2.add(txt_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 320, 230, 30));
+
+        password_chekBox.setBackground(new java.awt.Color(102, 102, 255));
+        password_chekBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                password_chekBoxActionPerformed(evt);
+            }
+        });
+        jPanel2.add(password_chekBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 310, -1, -1));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 0, 400, 600));
 
@@ -256,6 +284,17 @@ public class Login extends javax.swing.JFrame {
               Login();
           } 
     }//GEN-LAST:event_rSMaterialButtonCircle1ActionPerformed
+
+    private void password_chekBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_password_chekBoxActionPerformed
+
+        if (password_chekBox.isSelected()) {
+            txt_password.setEchoChar('\0');
+
+        }else{
+            txt_password.setEchoChar('*');
+        }
+
+    }//GEN-LAST:event_password_chekBoxActionPerformed
 
 //-----------------------------------------------------------------------------------------------------------------------------
     
@@ -307,9 +346,10 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JCheckBox password_chekBox;
     private rojerusan.RSMaterialButtonCircle rSMaterialButtonCircle1;
     private rojerusan.RSMaterialButtonCircle rSMaterialButtonCircle2;
-    private app.bolivia.swing.JCTextField txt_password;
+    private rojerusan.RSPasswordTextPlaceHolder txt_password;
     private app.bolivia.swing.JCTextField txt_username;
     // End of variables declaration//GEN-END:variables
 }

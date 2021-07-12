@@ -897,8 +897,8 @@ public class LendingBookUser extends javax.swing.JFrame {
     }//GEN-LAST:event_rSMaterialButtonCircle1ActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        Home h = new Home();
-        h.show();
+        Home_user Home = new Home_user();
+        Home.show();
         this.hide();
     }//GEN-LAST:event_jLabel1MouseClicked
 

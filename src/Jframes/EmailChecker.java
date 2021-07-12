@@ -40,25 +40,21 @@ public class EmailChecker {
         // System.out.println(response.toString());
     }
 
-    public static void main(String[] args) {
+    public boolean checker(String email) {
+        boolean isExist = false;
         EmailChecker ec = new EmailChecker();
-        String emailadd = "mahdijalili@gmail.com";
-        int length = emailadd.length();
         try {
-            String ecc = ec.checkEmail(emailadd);
-            System.out.println(ecc);
-            System.out.println(ecc.charAt(length + 79));
-            char torf = ecc.charAt(length + 79);
+            String ecc = ec.checkEmail(email);
+            char torf = ecc.charAt(ecc.indexOf("smtp_check") + 12);
             if (torf == 't') {
-                System.out.println("The email is exist");
+                isExist = true;
             } else if (torf == 'f') {
-                System.out.println("The email is not exist");
+                isExist = false;
             }
         } catch (Exception e) {
 
             e.printStackTrace();
         }
-
+        return isExist;
     }
-
 }
