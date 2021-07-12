@@ -124,11 +124,84 @@ public class ViewAllRecord extends javax.swing.JFrame {
             }
             
         }
+        
+        public void findByReturnDate(){
+            
+            // baraye gereftan etelaat az package ytil estefade mikonim
+            Date uReturnDate = date_returnDate2.getDatoFecha();
+            
+            //package sql long haro barmigardone pas variable haye ma bayad be noe long tabdil bashan
+            long u=uReturnDate.getTime();
+            
+            //baraye estefade az etelaat az package sql estefade mikoim 
+            //chon package java Date ro support nemikone 
+            java.sql.Date Date= new java.sql.Date(u);
+            
+            
+            try {
+                     
+                Connection con = databaseconnection.getConnection();
+                String sql= "select * from lending_book where return_book_datte=?";
+                PreparedStatement ps=con.prepareStatement(sql);
+                ps.setDate(1, Date);
+                
+                ResultSet rs= ps.executeQuery();
+                
+                while(rs.next()){
+                        String id          =rs.getString("id");
+                        String bookName   = rs.getString("book_name");
+                        String studentName = rs.getString("student_name");
+                        String lendingDate       = rs.getString("borrow_date");
+                        String returnDate      = rs.getString("return_book_datte");
+                        String status       = rs.getString("status");
+                        
+                        
+                        Object[] obj= {id,bookName,studentName,lendingDate,returnDate,status};
+                        
+                        model =(DefaultTableModel)tbl_borrowBookDetails.getModel();
+                        model.addRow(obj);
+                }
+            }
+            catch (Exception e) {
+                JOptionPane.showMessageDialog(this,"Error");
+            }
+            
+        }
+        
+        public void findByID(){
+            
+            String user_id=txt_username.getText();
+            
+            try {
+                     
+                Connection con = databaseconnection.getConnection();
+                String sql= "select * from lending_book where id=?";
+                PreparedStatement ps=con.prepareStatement(sql);
+                ps.setString(1, user_id);
+                
+                ResultSet rs= ps.executeQuery();
+                
+                while(rs.next()){
+                        String id          =rs.getString("id");
+                        String bookName   = rs.getString("book_name");
+                        String studentName = rs.getString("student_name");
+                        String lendingDate       = rs.getString("borrow_date");
+                        String returnDate      = rs.getString("return_book_datte");
+                        String status       = rs.getString("status");
+                        
+                        
+                        Object[] obj= {id,bookName,studentName,lendingDate,returnDate,status};
+                        
+                        model =(DefaultTableModel)tbl_borrowBookDetails.getModel();
+                        model.addRow(obj);
+                }
+            }
+            catch (Exception e) {
+                JOptionPane.showMessageDialog(this,"Error");
+            }
+            
+        }
     
-    
-    
-   
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -137,7 +210,6 @@ public class ViewAllRecord extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
-        date_lendingDate = new rojeru_san.componentes.RSDateChooser();
         jLabel13 = new javax.swing.JLabel();
         kButton1 = new com.k33ptoo.components.KButton();
         jPanel8 = new javax.swing.JPanel();
@@ -145,6 +217,13 @@ public class ViewAllRecord extends javax.swing.JFrame {
         jPanel10 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         date_returndate = new rojeru_san.componentes.RSDateChooser();
+        kButton2 = new com.k33ptoo.components.KButton();
+        date_lendingDate = new rojeru_san.componentes.RSDateChooser();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        date_returnDate2 = new rojeru_san.componentes.RSDateChooser();
+        kButton3 = new com.k33ptoo.components.KButton();
+        txt_username = new app.bolivia.swing.JCTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbl_borrowBookDetails = new rojeru_san.complementos.RSTableMetro();
@@ -179,21 +258,15 @@ public class ViewAllRecord extends javax.swing.JFrame {
 
         jLabel12.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel12.setText("Lending Date :");
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 130, 60));
-
-        date_lendingDate.setColorBackground(new java.awt.Color(255, 51, 51));
-        date_lendingDate.setColorForeground(new java.awt.Color(255, 51, 51));
-        date_lendingDate.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
-        date_lendingDate.setPlaceholder("Select Lending Date ..");
-        jPanel1.add(date_lendingDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 190, 290, -1));
+        jLabel12.setText("User Name :");
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 130, 60));
 
         jLabel13.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel13.setText("Return Date :");
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 180, 160, 60));
+        jLabel13.setText("End Lending Date :");
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 180, 170, 60));
 
-        kButton1.setText("Search");
+        kButton1.setText("فیلتز");
         kButton1.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
         kButton1.setkBackGroundColor(new java.awt.Color(51, 51, 255));
         kButton1.setkBorderRadius(40);
@@ -208,7 +281,7 @@ public class ViewAllRecord extends javax.swing.JFrame {
                 kButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(kButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 190, 140, -1));
+        jPanel1.add(kButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 190, 140, -1));
 
         jPanel8.setBackground(new java.awt.Color(255, 51, 51));
         jPanel8.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -231,9 +304,8 @@ public class ViewAllRecord extends javax.swing.JFrame {
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                .addContainerGap(58, Short.MAX_VALUE)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(0, 70, Short.MAX_VALUE)
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -281,10 +353,81 @@ public class ViewAllRecord extends javax.swing.JFrame {
         date_returndate.setColorBackground(new java.awt.Color(255, 51, 51));
         date_returndate.setColorForeground(new java.awt.Color(255, 51, 51));
         date_returndate.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
-        date_returndate.setPlaceholder("Select Lending Date ..");
-        jPanel1.add(date_returndate, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 190, 290, -1));
+        date_returndate.setPlaceholder("Select Return Date ..");
+        jPanel1.add(date_returndate, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 190, 260, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 280));
+        kButton2.setText("Find by return date");
+        kButton2.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
+        kButton2.setkBackGroundColor(new java.awt.Color(51, 51, 255));
+        kButton2.setkBorderRadius(40);
+        kButton2.setkEndColor(new java.awt.Color(51, 51, 255));
+        kButton2.setkHoverEndColor(new java.awt.Color(0, 255, 255));
+        kButton2.setkHoverForeGround(new java.awt.Color(51, 51, 51));
+        kButton2.setkHoverStartColor(new java.awt.Color(51, 51, 255));
+        kButton2.setkSelectedColor(new java.awt.Color(0, 204, 204));
+        kButton2.setkStartColor(new java.awt.Color(0, 255, 255));
+        kButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(kButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 260, 160, -1));
+
+        date_lendingDate.setColorBackground(new java.awt.Color(255, 51, 51));
+        date_lendingDate.setColorForeground(new java.awt.Color(255, 51, 51));
+        date_lendingDate.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
+        date_lendingDate.setPlaceholder("Select Lending Date ..");
+        jPanel1.add(date_lendingDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 190, 270, -1));
+
+        jLabel14.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel14.setText("Start Lending Date :");
+        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 180, 60));
+
+        jLabel15.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel15.setText("Return Date :");
+        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 130, 60));
+
+        date_returnDate2.setColorBackground(new java.awt.Color(255, 51, 51));
+        date_returnDate2.setColorForeground(new java.awt.Color(255, 51, 51));
+        date_returnDate2.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
+        date_returnDate2.setPlaceholder("Select Return Date ..");
+        jPanel1.add(date_returnDate2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 260, 270, -1));
+
+        kButton3.setText("Find by Name");
+        kButton3.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
+        kButton3.setkBackGroundColor(new java.awt.Color(51, 51, 255));
+        kButton3.setkBorderRadius(40);
+        kButton3.setkEndColor(new java.awt.Color(51, 51, 255));
+        kButton3.setkHoverEndColor(new java.awt.Color(0, 255, 255));
+        kButton3.setkHoverForeGround(new java.awt.Color(51, 51, 51));
+        kButton3.setkHoverStartColor(new java.awt.Color(51, 51, 255));
+        kButton3.setkSelectedColor(new java.awt.Color(0, 204, 204));
+        kButton3.setkStartColor(new java.awt.Color(0, 255, 255));
+        kButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kButton3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(kButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 330, 160, -1));
+
+        txt_username.setBackground(new java.awt.Color(102, 102, 255));
+        txt_username.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_username.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        txt_username.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_usernameFocusLost(evt);
+            }
+        });
+        txt_username.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_usernameActionPerformed(evt);
+            }
+        });
+        jPanel1.add(txt_username, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 330, 230, 40));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 420));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -314,7 +457,7 @@ public class ViewAllRecord extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tbl_borrowBookDetails);
 
-        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 320));
+        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 1200, 180));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 1200, 580));
 
@@ -353,6 +496,26 @@ public class ViewAllRecord extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_jLabel9MouseClicked
 
+    private void kButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton2ActionPerformed
+        // TODO add your handling code here:
+        clearTable();
+        findByReturnDate();
+    }//GEN-LAST:event_kButton2ActionPerformed
+
+    private void kButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton3ActionPerformed
+        // TODO add your handling code here:
+        clearTable();
+        findByID();
+    }//GEN-LAST:event_kButton3ActionPerformed
+
+    private void txt_usernameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_usernameFocusLost
+
+    }//GEN-LAST:event_txt_usernameFocusLost
+
+    private void txt_usernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_usernameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_usernameActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -388,10 +551,13 @@ public class ViewAllRecord extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private rojeru_san.componentes.RSDateChooser date_lendingDate;
+    private rojeru_san.componentes.RSDateChooser date_returnDate2;
     private rojeru_san.componentes.RSDateChooser date_returndate;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -401,6 +567,9 @@ public class ViewAllRecord extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane2;
     private com.k33ptoo.components.KButton kButton1;
+    private com.k33ptoo.components.KButton kButton2;
+    private com.k33ptoo.components.KButton kButton3;
     private rojeru_san.complementos.RSTableMetro tbl_borrowBookDetails;
+    private app.bolivia.swing.JCTextField txt_username;
     // End of variables declaration//GEN-END:variables
 }
