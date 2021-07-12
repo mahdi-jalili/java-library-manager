@@ -3,20 +3,25 @@ package Jframes;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Date;
 import javax.swing.JOptionPane;
-
+import java.util.Date;
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 /**
  *
  * @author sina
  */
-public class LendingBook extends javax.swing.JFrame {
+public class LendingBookUser extends javax.swing.JFrame {
 
     /**
      * Creates new form LendingBook
      */
-    public LendingBook() {
+    public LendingBookUser() {
         initComponents();
+        getCurrnetDate();
     }
 
     //for give information from database and display that in bookdetail text field
@@ -74,6 +79,13 @@ public class LendingBook extends javax.swing.JFrame {
     }
 
     public boolean lendingBook() {
+        Calendar cal = Calendar.getInstance();
+        Date currentDate = new Date();
+        
+        cal.setTime(currentDate);
+        cal.add(Calendar.DAY_OF_MONTH, 10);
+        Date dateDeadLine = cal.getTime();
+        
         boolean isborrow = false;
 
         int bookId = Integer.parseInt(txt_bookId.getText());
@@ -84,14 +96,15 @@ public class LendingBook extends javax.swing.JFrame {
         // bayad baraye estefade az class Date ketabkhoneye Date dar java.util ro import konim aval . 
         //chon chizi ke on ghesmate taeiin konnade tarikh return mikone jozve date hastesh
         //va baraye daryaft khoroji on az method getDatefecha estefade mishe
-        Date lendingDate = date_lendingDate.getDatoFecha();
-        Date returnDate = date_returnDate.getDatoFecha();
 
         //chon date marbot be sql bayad az noe hamon sql bashe taghruban ye castt darim inja 
         //chin java.sql.date long migire inkaro kardim
-        Long d1 = lendingDate.getTime();
-        Long d2 = returnDate.getTime();
-
+        /*Date d1 = date.dateOfBorrow;
+        Date d2 = date.deadLine;*/
+        
+        Long d1 = currentDate.getTime();
+        Long d2 = dateDeadLine.getTime();
+        
         java.sql.Date slendingDate = new java.sql.Date(d1);
         java.sql.Date sreturnDate = new java.sql.Date(d2);
 
@@ -117,7 +130,8 @@ public class LendingBook extends javax.swing.JFrame {
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error");
+            System.out.println(e);
+            //JOptionPane.showMessageDialog(this, "Error");
         }
         return isborrow;
     }
@@ -185,6 +199,29 @@ public class LendingBook extends javax.swing.JFrame {
 
         return isAlreadyBorrow;
     }
+    
+    public void getCurrnetDate() {
+        Calendar cal = Calendar.getInstance();
+        Date currentDate = new Date();
+        
+        cal.setTime(currentDate);
+        cal.add(Calendar.DAY_OF_MONTH, 10);
+        Date dateDeadLine = cal.getTime();
+        
+        currentDateLabel.setText(changeTypeOfDates(currentDate));
+        retunrDateLabel.setText(changeTypeOfDates(dateDeadLine));
+    }
+    
+    public String changeTypeOfDates(Date date) {
+        //Getting the default zone id
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        //Converting the date to Instant
+        Instant instant = date.toInstant();
+        LocalDate localdate = instant.atZone(defaultZoneId).toLocalDate();
+        return localdate.toString();
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -195,6 +232,7 @@ public class LendingBook extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        date_returnDate = new rojeru_san.componentes.RSDateChooser();
         main_panel = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -258,14 +296,19 @@ public class LendingBook extends javax.swing.JFrame {
         jPanel18 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         txt_studentId = new app.bolivia.swing.JCTextField();
-        jLabel12 = new javax.swing.JLabel();
+        retunrDateLabel = new javax.swing.JLabel();
         txt_bookId = new app.bolivia.swing.JCTextField();
         jLabel13 = new javax.swing.JLabel();
-        date_lendingDate = new rojeru_san.componentes.RSDateChooser();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
-        date_returnDate = new rojeru_san.componentes.RSDateChooser();
         rSMaterialButtonCircle1 = new rojerusan.RSMaterialButtonCircle();
+        jLabel39 = new javax.swing.JLabel();
+        currentDateLabel = new javax.swing.JLabel();
+
+        date_returnDate.setColorBackground(new java.awt.Color(255, 51, 51));
+        date_returnDate.setColorForeground(new java.awt.Color(255, 51, 51));
+        date_returnDate.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
+        date_returnDate.setPlaceholder("Select Lending Date ..");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -738,10 +781,9 @@ public class LendingBook extends javax.swing.JFrame {
         });
         main_panel.add(txt_studentId, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 310, 250, 40));
 
-        jLabel12.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 51, 51));
-        jLabel12.setText("Lending Date :");
-        main_panel.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 370, 160, 60));
+        retunrDateLabel.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
+        retunrDateLabel.setForeground(new java.awt.Color(255, 51, 51));
+        main_panel.add(retunrDateLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 440, 160, 60));
 
         txt_bookId.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 51, 51)));
         txt_bookId.setToolTipText("");
@@ -764,12 +806,6 @@ public class LendingBook extends javax.swing.JFrame {
         jLabel13.setText("Enter Book Id :");
         main_panel.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 230, 160, 60));
 
-        date_lendingDate.setColorBackground(new java.awt.Color(255, 51, 51));
-        date_lendingDate.setColorForeground(new java.awt.Color(255, 51, 51));
-        date_lendingDate.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
-        date_lendingDate.setPlaceholder("Select Lending Date ..");
-        main_panel.add(date_lendingDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 380, 250, -1));
-
         jLabel19.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(255, 51, 51));
         jLabel19.setText("Enter Student Id :");
@@ -780,12 +816,6 @@ public class LendingBook extends javax.swing.JFrame {
         jLabel20.setText("Book Return Date :");
         main_panel.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 440, 180, 60));
 
-        date_returnDate.setColorBackground(new java.awt.Color(255, 51, 51));
-        date_returnDate.setColorForeground(new java.awt.Color(255, 51, 51));
-        date_returnDate.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
-        date_returnDate.setPlaceholder("Select Lending Date ..");
-        main_panel.add(date_returnDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 450, 250, -1));
-
         rSMaterialButtonCircle1.setBackground(new java.awt.Color(255, 51, 51));
         rSMaterialButtonCircle1.setText("Lendiing Book");
         rSMaterialButtonCircle1.addActionListener(new java.awt.event.ActionListener() {
@@ -794,6 +824,15 @@ public class LendingBook extends javax.swing.JFrame {
             }
         });
         main_panel.add(rSMaterialButtonCircle1, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 520, 190, 60));
+
+        jLabel39.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
+        jLabel39.setForeground(new java.awt.Color(255, 51, 51));
+        jLabel39.setText("Lending Date :");
+        main_panel.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 370, 160, 60));
+
+        currentDateLabel.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
+        currentDateLabel.setForeground(new java.awt.Color(255, 51, 51));
+        main_panel.add(currentDateLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 370, 160, 60));
 
         getContentPane().add(main_panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 600));
 
@@ -887,30 +926,30 @@ public class LendingBook extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LendingBook.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LendingBookUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LendingBook.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LendingBookUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LendingBook.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LendingBookUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LendingBook.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LendingBookUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LendingBook().setVisible(true);
+                new LendingBookUser().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private rojeru_san.componentes.RSDateChooser date_lendingDate;
+    private javax.swing.JLabel currentDateLabel;
     private rojeru_san.componentes.RSDateChooser date_returnDate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -939,6 +978,7 @@ public class LendingBook extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
@@ -975,6 +1015,7 @@ public class LendingBook extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_writer;
     private javax.swing.JPanel main_panel;
     private rojerusan.RSMaterialButtonCircle rSMaterialButtonCircle1;
+    private javax.swing.JLabel retunrDateLabel;
     private app.bolivia.swing.JCTextField txt_bookId;
     private app.bolivia.swing.JCTextField txt_studentId;
     // End of variables declaration//GEN-END:variables
