@@ -266,7 +266,7 @@ public class ViewAllRecord extends javax.swing.JFrame {
         jLabel13.setText("End Lending Date :");
         jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 180, 170, 60));
 
-        kButton1.setText("فیلتز");
+        kButton1.setText("Filter");
         kButton1.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
         kButton1.setkBackGroundColor(new java.awt.Color(51, 51, 255));
         kButton1.setkBorderRadius(40);
@@ -281,7 +281,7 @@ public class ViewAllRecord extends javax.swing.JFrame {
                 kButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(kButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 190, 140, -1));
+        jPanel1.add(kButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 180, 140, -1));
 
         jPanel8.setBackground(new java.awt.Color(255, 51, 51));
         jPanel8.addMouseListener(new java.awt.event.MouseAdapter() {
