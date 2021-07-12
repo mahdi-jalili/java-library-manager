@@ -1,4 +1,3 @@
-
 package Jframes;
 
 import java.sql.Connection;
@@ -18,190 +17,209 @@ public class ViewAllRecord extends javax.swing.JFrame {
     /**
      * Creates new form ViewAllRecord
      */
-    
-     DefaultTableModel model;
-    
+    DefaultTableModel model;
+
     public ViewAllRecord() {
         initComponents();
-        
+
         setBorrowBookDetailsToTable();
     }
-    
+
     //--------------------------------------------------------------------------------------------------------------------------------------------------------    
-       //to set the book details into the table
-    public void setBorrowBookDetailsToTable(){
-            
-            
-            try{
-                
-                Connection con=databaseconnection.getConnection();
-                Statement st=con.createStatement();
-                ResultSet rs= st.executeQuery("select * from lending_book");
-                
-                while(rs.next()){
-                        
-                        String id          =rs.getString("id");
-                        String bookName   = rs.getString("book_name");
-                        String studentName = rs.getString("student_name");
-                        String lendingDate       = rs.getString("borrow_date");
-                        String returnDate      = rs.getString("return_book_datte");
-                        String status       = rs.getString("status");
-                        
-                        
-                        Object[] obj= {id,bookName,studentName,lendingDate,returnDate,status};
-                        
-                        model =(DefaultTableModel)tbl_borrowBookDetails.getModel();
-                        model.addRow(obj);
-                    
-                }
-                
+    //to set the book details into the table
+    public void setBorrowBookDetailsToTable() {
+
+        try {
+
+            Connection con = databaseconnection.getConnection();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("select * from lending_book");
+
+            while (rs.next()) {
+
+                String id = rs.getString("id");
+                String bookName = rs.getString("book_name");
+                String studentName = rs.getString("student_name");
+                String lendingDate = rs.getString("borrow_date");
+                String returnDate = rs.getString("return_book_datte");
+                String status = rs.getString("status");
+
+                Object[] obj = {id, bookName, studentName, lendingDate, returnDate, status};
+
+                model = (DefaultTableModel) tbl_borrowBookDetails.getModel();
+                model.addRow(obj);
+
             }
-            catch(Exception e){
-                    
-                JOptionPane.showMessageDialog(this,"Error");
-            }
-              
-            
+
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(this, "Error");
         }
- 
+
+    }
+
 //method to clear table      
-        public void clearTable(){
-            
-            DefaultTableModel model=(DefaultTableModel)tbl_borrowBookDetails.getModel();
-            
-            //intori tamame history ghabli jadval pak mishe
-            model.setRowCount(0);
-            
-            
-        }   
-    
+    public void clearTable() {
+
+        DefaultTableModel model = (DefaultTableModel) tbl_borrowBookDetails.getModel();
+
+        //intori tamame history ghabli jadval pak mishe
+        model.setRowCount(0);
+
+    }
+
     //to fetch the record using date fields
-        public void search(){
-            
-            // baraye gereftan etelaat az package ytil estefade mikonim
-            Date uFromDate = date_lendingDate.getDatoFecha();
-            Date uToDate   = date_returndate.getDatoFecha();
-            
-            //package sql long haro barmigardone pas variable haye ma bayad be noe long tabdil bashan
-            long u1=uFromDate.getTime();
-            long u2=uToDate.getTime();
-            
-            //baraye estefade az etelaat az package sql estefade mikoim 
-            //chon package java Date ro support nemikone 
-            java.sql.Date fromDate= new java.sql.Date(u1);
-            java.sql.Date toDate= new java.sql.Date(u2);
-            
-            
-            try {
-                     
-                Connection con = databaseconnection.getConnection();
-                String sql= "select * from lending_book where borrow_date BETWEEN ? and ?";
-                PreparedStatement ps=con.prepareStatement(sql);
-                ps.setDate(1, fromDate);
-                ps.setDate(2,  toDate);
-                
-                ResultSet rs= ps.executeQuery();
-                
-                while(rs.next()){
-                        String id          =rs.getString("id");
-                        String bookName   = rs.getString("book_name");
-                        String studentName = rs.getString("student_name");
-                        String lendingDate       = rs.getString("borrow_date");
-                        String returnDate      = rs.getString("return_book_datte");
-                        String status       = rs.getString("status");
-                        
-                        
-                        Object[] obj= {id,bookName,studentName,lendingDate,returnDate,status};
-                        
-                        model =(DefaultTableModel)tbl_borrowBookDetails.getModel();
-                        model.addRow(obj);
-                                        
-                    
-                }
+    public void search() {
+
+        // baraye gereftan etelaat az package ytil estefade mikonim
+        Date uFromDate = date_lendingDate.getDatoFecha();
+        Date uToDate = date_returndate.getDatoFecha();
+
+        //package sql long haro barmigardone pas variable haye ma bayad be noe long tabdil bashan
+        long u1 = uFromDate.getTime();
+        long u2 = uToDate.getTime();
+
+        //baraye estefade az etelaat az package sql estefade mikoim 
+        //chon package java Date ro support nemikone 
+        java.sql.Date fromDate = new java.sql.Date(u1);
+        java.sql.Date toDate = new java.sql.Date(u2);
+
+        try {
+
+            Connection con = databaseconnection.getConnection();
+            String sql = "select * from lending_book where borrow_date BETWEEN ? and ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setDate(1, fromDate);
+            ps.setDate(2, toDate);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String id = rs.getString("id");
+                String bookName = rs.getString("book_name");
+                String studentName = rs.getString("student_name");
+                String lendingDate = rs.getString("borrow_date");
+                String returnDate = rs.getString("return_book_datte");
+                String status = rs.getString("status");
+
+                Object[] obj = {id, bookName, studentName, lendingDate, returnDate, status};
+
+                model = (DefaultTableModel) tbl_borrowBookDetails.getModel();
+                model.addRow(obj);
+
             }
-            catch (Exception e) {
-                JOptionPane.showMessageDialog(this,"Error");
-            }
-            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error");
         }
-        
-        public void findByReturnDate(){
-            
-            // baraye gereftan etelaat az package ytil estefade mikonim
-            Date uReturnDate = date_returnDate2.getDatoFecha();
-            
-            //package sql long haro barmigardone pas variable haye ma bayad be noe long tabdil bashan
-            long u=uReturnDate.getTime();
-            
-            //baraye estefade az etelaat az package sql estefade mikoim 
-            //chon package java Date ro support nemikone 
-            java.sql.Date Date= new java.sql.Date(u);
-            
-            
-            try {
-                     
-                Connection con = databaseconnection.getConnection();
-                String sql= "select * from lending_book where return_book_datte=?";
-                PreparedStatement ps=con.prepareStatement(sql);
-                ps.setDate(1, Date);
-                
-                ResultSet rs= ps.executeQuery();
-                
-                while(rs.next()){
-                        String id          =rs.getString("id");
-                        String bookName   = rs.getString("book_name");
-                        String studentName = rs.getString("student_name");
-                        String lendingDate       = rs.getString("borrow_date");
-                        String returnDate      = rs.getString("return_book_datte");
-                        String status       = rs.getString("status");
-                        
-                        
-                        Object[] obj= {id,bookName,studentName,lendingDate,returnDate,status};
-                        
-                        model =(DefaultTableModel)tbl_borrowBookDetails.getModel();
-                        model.addRow(obj);
-                }
+
+    }
+
+    public void findByReturnDate() {
+
+        // baraye gereftan etelaat az package ytil estefade mikonim
+        Date uReturnDate = date_returnDate2.getDatoFecha();
+
+        //package sql long haro barmigardone pas variable haye ma bayad be noe long tabdil bashan
+        long u = uReturnDate.getTime();
+
+        //baraye estefade az etelaat az package sql estefade mikoim 
+        //chon package java Date ro support nemikone 
+        java.sql.Date Date = new java.sql.Date(u);
+
+        try {
+
+            Connection con = databaseconnection.getConnection();
+            String sql = "select * from lending_book where return_book_datte=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setDate(1, Date);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String id = rs.getString("id");
+                String bookName = rs.getString("book_name");
+                String studentName = rs.getString("student_name");
+                String lendingDate = rs.getString("borrow_date");
+                String returnDate = rs.getString("return_book_datte");
+                String status = rs.getString("status");
+
+                Object[] obj = {id, bookName, studentName, lendingDate, returnDate, status};
+
+                model = (DefaultTableModel) tbl_borrowBookDetails.getModel();
+                model.addRow(obj);
             }
-            catch (Exception e) {
-                JOptionPane.showMessageDialog(this,"Error");
-            }
-            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error");
         }
-        
-        public void findByID(){
-            
-            String user_id=txt_username.getText();
-            
-            try {
-                     
-                Connection con = databaseconnection.getConnection();
-                String sql= "select * from lending_book where id=?";
-                PreparedStatement ps=con.prepareStatement(sql);
-                ps.setString(1, user_id);
-                
-                ResultSet rs= ps.executeQuery();
-                
-                while(rs.next()){
-                        String id          =rs.getString("id");
-                        String bookName   = rs.getString("book_name");
-                        String studentName = rs.getString("student_name");
-                        String lendingDate       = rs.getString("borrow_date");
-                        String returnDate      = rs.getString("return_book_datte");
-                        String status       = rs.getString("status");
-                        
-                        
-                        Object[] obj= {id,bookName,studentName,lendingDate,returnDate,status};
-                        
-                        model =(DefaultTableModel)tbl_borrowBookDetails.getModel();
-                        model.addRow(obj);
-                }
+
+    }
+
+    public void findByUserName() {
+
+        String user_id = txt_username.getText();
+
+        try {
+
+            Connection con = databaseconnection.getConnection();
+            String sql = "select * from lending_book where student_name=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, user_id);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String id = rs.getString("id");
+                String bookName = rs.getString("book_name");
+                String studentName = rs.getString("student_name");
+                String lendingDate = rs.getString("borrow_date");
+                String returnDate = rs.getString("return_book_datte");
+                String status = rs.getString("status");
+
+                Object[] obj = {id, bookName, studentName, lendingDate, returnDate, status};
+
+                model = (DefaultTableModel) tbl_borrowBookDetails.getModel();
+                model.addRow(obj);
             }
-            catch (Exception e) {
-                JOptionPane.showMessageDialog(this,"Error");
-            }
-            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error");
         }
-    
+
+    }
+
+    public void findByBookName() {
+
+        String book_id = txt_bookname.getText();
+
+        try {
+
+            Connection con = databaseconnection.getConnection();
+            String sql = "select * from lending_book where book_name=? and status=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, book_id);
+            ps.setString(2, "pending");
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String id = rs.getString("id");
+                String bookName = rs.getString("book_name");
+                String studentName = rs.getString("student_name");
+                String lendingDate = rs.getString("borrow_date");
+                String returnDate = rs.getString("return_book_datte");
+                String status = rs.getString("status");
+
+                Object[] obj = {id, bookName, studentName, lendingDate, returnDate, status};
+
+                model = (DefaultTableModel) tbl_borrowBookDetails.getModel();
+                model.addRow(obj);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error");
+            System.out.println(e);
+        }
+
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -224,6 +242,9 @@ public class ViewAllRecord extends javax.swing.JFrame {
         date_returnDate2 = new rojeru_san.componentes.RSDateChooser();
         kButton3 = new com.k33ptoo.components.KButton();
         txt_username = new app.bolivia.swing.JCTextField();
+        jLabel16 = new javax.swing.JLabel();
+        txt_bookname = new app.bolivia.swing.JCTextField();
+        kButton4 = new com.k33ptoo.components.KButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbl_borrowBookDetails = new rojeru_san.complementos.RSTableMetro();
@@ -258,8 +279,8 @@ public class ViewAllRecord extends javax.swing.JFrame {
 
         jLabel12.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel12.setText("User Name :");
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 130, 60));
+        jLabel12.setText("Book Name :");
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 330, 130, 60));
 
         jLabel13.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
@@ -281,7 +302,7 @@ public class ViewAllRecord extends javax.swing.JFrame {
                 kButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(kButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 180, 140, -1));
+        jPanel1.add(kButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 190, 140, -1));
 
         jPanel8.setBackground(new java.awt.Color(255, 51, 51));
         jPanel8.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -410,7 +431,7 @@ public class ViewAllRecord extends javax.swing.JFrame {
                 kButton3ActionPerformed(evt);
             }
         });
-        jPanel1.add(kButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 330, 160, -1));
+        jPanel1.add(kButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 340, 160, -1));
 
         txt_username.setBackground(new java.awt.Color(102, 102, 255));
         txt_username.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
@@ -425,7 +446,44 @@ public class ViewAllRecord extends javax.swing.JFrame {
                 txt_usernameActionPerformed(evt);
             }
         });
-        jPanel1.add(txt_username, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 330, 230, 40));
+        jPanel1.add(txt_username, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 340, 230, 40));
+
+        jLabel16.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel16.setText("Student Name :");
+        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 150, 60));
+
+        txt_bookname.setBackground(new java.awt.Color(102, 102, 255));
+        txt_bookname.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_bookname.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        txt_bookname.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_booknameFocusLost(evt);
+            }
+        });
+        txt_bookname.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_booknameActionPerformed(evt);
+            }
+        });
+        jPanel1.add(txt_bookname, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 340, 230, 40));
+
+        kButton4.setText("Find by Name");
+        kButton4.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
+        kButton4.setkBackGroundColor(new java.awt.Color(51, 51, 255));
+        kButton4.setkBorderRadius(40);
+        kButton4.setkEndColor(new java.awt.Color(51, 51, 255));
+        kButton4.setkHoverEndColor(new java.awt.Color(0, 255, 255));
+        kButton4.setkHoverForeGround(new java.awt.Color(51, 51, 51));
+        kButton4.setkHoverStartColor(new java.awt.Color(51, 51, 255));
+        kButton4.setkSelectedColor(new java.awt.Color(0, 204, 204));
+        kButton4.setkStartColor(new java.awt.Color(0, 255, 255));
+        kButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kButton4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(kButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 340, 160, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 420));
 
@@ -470,13 +528,13 @@ public class ViewAllRecord extends javax.swing.JFrame {
     }//GEN-LAST:event_tbl_borrowBookDetailsMouseClicked
 
     private void kButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton1ActionPerformed
-           clearTable();
-           search();
+        clearTable();
+        search();
     }//GEN-LAST:event_kButton1ActionPerformed
 
     private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
 
-        Home h=new Home();
+        Home h = new Home();
         h.show();
         this.hide();
 
@@ -487,9 +545,9 @@ public class ViewAllRecord extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel10MouseClicked
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
-         Home h= new Home();
-         h.show();
-         this.hide();
+        Home h = new Home();
+        h.show();
+        this.hide();
     }//GEN-LAST:event_jLabel10MouseClicked
 
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
@@ -505,7 +563,7 @@ public class ViewAllRecord extends javax.swing.JFrame {
     private void kButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton3ActionPerformed
         // TODO add your handling code here:
         clearTable();
-        findByID();
+        findByUserName();
     }//GEN-LAST:event_kButton3ActionPerformed
 
     private void txt_usernameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_usernameFocusLost
@@ -515,6 +573,20 @@ public class ViewAllRecord extends javax.swing.JFrame {
     private void txt_usernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_usernameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_usernameActionPerformed
+
+    private void txt_booknameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_booknameFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_booknameFocusLost
+
+    private void txt_booknameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_booknameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_booknameActionPerformed
+
+    private void kButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton4ActionPerformed
+        // TODO add your handling code here:
+        clearTable();
+        findByBookName();
+    }//GEN-LAST:event_kButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -558,6 +630,7 @@ public class ViewAllRecord extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -569,7 +642,9 @@ public class ViewAllRecord extends javax.swing.JFrame {
     private com.k33ptoo.components.KButton kButton1;
     private com.k33ptoo.components.KButton kButton2;
     private com.k33ptoo.components.KButton kButton3;
+    private com.k33ptoo.components.KButton kButton4;
     private rojeru_san.complementos.RSTableMetro tbl_borrowBookDetails;
+    private app.bolivia.swing.JCTextField txt_bookname;
     private app.bolivia.swing.JCTextField txt_username;
     // End of variables declaration//GEN-END:variables
 }
