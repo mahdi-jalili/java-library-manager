@@ -17,71 +17,82 @@ public class SignUp extends javax.swing.JFrame {
      */
     public SignUp() {
         initComponents();
-
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------    
-    //method to insert valius into users tabale
+    //method to insert values into users tabale
     public void InsertSignupDetails() {
+        //Variables of class : name for username, pwd for user password, email for useremail and contact for user contact
         String name = txt_username.getText();
         String pwd = txt_password.getText();
         String email = txt_email.getText();
         String contact = txt_contact.getText();
-
+        //try to connect to the database
         try {
             Connection con = databaseconnection.getConnection();
             String sql = "insert into users(name,password,email,contact) values (?,?,?,?)";
             PreparedStatement ps = con.prepareStatement(sql);
-
+            //set variables in database
             ps.setString(1, name);
             ps.setString(2, pwd);
             ps.setString(3, email);
             ps.setString(4, contact);
-
+            //execute the query
             int updateRowCount = ps.executeUpdate();
 
+            //if the SignUp done successfully
             if (updateRowCount > 0) {
                 JOptionPane.showMessageDialog(this, "Recorded Innserted Successfuly ,Please Complete your Profile In the Home Page");
-
+                //open Login page for Login the user
                 Login l = new Login();
                 l.show();
                 this.hide();
-
-            } else {
+            } //if the SignUp failed
+            else {
                 JOptionPane.showMessageDialog(this, "Recorded Insertion Failur");
             }
-        } catch (Exception e) {
+        } //if try throw any Exception of connecting to the database
+        catch (Exception e) {
             e.printStackTrace();
-            //JOptionPane.showMessageDialog(this,"erroor");
         }
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------
+    //method to prevent the user from entering incorrect values 
     public boolean ValidateSignup() {
+        //Variables of class : name for username, pwd for user password, email for useremail and contact for user contact
         String name = txt_username.getText();
         String pwd = txt_password.getText();
         String email = txt_email.getText();
         String contact = txt_contact.getText();
+        //creating theEmail object from EmailCheker class
         EmailChecker theEmail = new EmailChecker();
+        //make a variable for result
         boolean isExist = true;
+        //if the username box was empty
         if (name.equals("")) {
             JOptionPane.showMessageDialog(this, "Pleas Enter the Username");
             isExist = false;
         }
+        //if the password box was empty
         if (pwd.equals("")) {
             JOptionPane.showMessageDialog(this, "Pleas Enter the Password");
             isExist = false;
         }
+        //if the email box was empty
         if (email.equals("")) {
             JOptionPane.showMessageDialog(this, "Pleas Enter the Email");
             isExist = false;
-        } else if (!email.matches("^.+@.+\\..+$")) {
+        } //if the email format was wrong
+        else if (!email.matches("^.+@.+\\..+$")) {
             JOptionPane.showMessageDialog(this, "Pleas Enter the Valid Email");
             isExist = false;
-        } else if (!theEmail.checker(email)) {
+        } //if the email was not exist
+        else if (!theEmail.checker(email)) {
             JOptionPane.showMessageDialog(this, "Pleas Enter the available Email");
             isExist = false;
         }
+        //if the contact box was empty
         if (contact.equals("")) {
             JOptionPane.showMessageDialog(this, "Pleas Enter Your Contact Number");
             isExist = false;
@@ -90,32 +101,29 @@ public class SignUp extends javax.swing.JFrame {
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------   
-    //chek for repet username
+    //check if username was exist (check username repetition)
     public boolean ChekUsername() {
-
+        //Variables of class : name for username
         String name = txt_username.getText();
-
-        //make a variable for result
+        //a variable for result
         boolean isExist = false;
 
         try {
             Connection con = databaseconnection.getConnection();
-            // Class.forName("com.mysql.jdbc.Driver");
-            //Connection connect= (Connection)DriverManager.getConnection("jdbc:mysql://localhost:3306/Library_Management","root","34313431");
+            //used query for name in user table
             String sql = "select * from users where name=?";
             PreparedStatement ps = con.prepareStatement(sql);
-
+      
             ps.setString(1, name);
             ResultSet rs = ps.executeQuery();
 
-            //this mean that username already exist
+            //this means that username already exist or not
             if (rs.next()) {
                 isExist = true;
             } else {
                 isExist = false;
             }
         } catch (Exception e) {
-            //e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error");
         }
         return isExist;
@@ -313,7 +321,7 @@ public class SignUp extends javax.swing.JFrame {
     private void rSMaterialButtonCircle2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle2ActionPerformed
 
         if (ValidateSignup() == true) {
-            //this mean that username not already exist
+            //this means that username not already exist or not
             if (ChekUsername() == false) {
                 InsertSignupDetails();
             } else {
@@ -330,7 +338,7 @@ public class SignUp extends javax.swing.JFrame {
 
     private void txt_usernameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_usernameFocusLost
 
-        //this mean that username already exist
+        //this means that username already exist
         if (ChekUsername() == true) {
             JOptionPane.showMessageDialog(this, "This Username Already Exist");
 

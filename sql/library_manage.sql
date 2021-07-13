@@ -19,10 +19,10 @@ CREATE TABLE IF NOT EXISTS `book_details` (
   PRIMARY KEY (`book_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 INSERT INTO `book_details` (`book_id`, `Book_name`, `writer`, `quantity`) VALUES
-(1, 'java', 'asadi', 2),
-(2, 'python', 'sina', 3),
-(3, 'php', 'mahdijalili', 1),
-(4, 'matlab', 'mahdidiaromidi', 2);
+(1, 'Advanced Java Programing', 'Mr.Asadi', 2),
+(2, 'Himself', 'Jess Kidd', 3),
+(3, 'The Great Gatsby', 'F. Scott Fitzgerald', 1),
+(4, 'War and Peace', 'Leo Tolstoy', 2);
 
 
 DROP TABLE IF EXISTS `lending_book`;
@@ -38,10 +38,7 @@ CREATE TABLE IF NOT EXISTS `lending_book` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 INSERT INTO `lending_book` (`id`, `book_id`, `book_name`, `student_id`, `student_name`, `borrow_date`, `return_book_datte`, `status`) VALUES
-(1, 1, 'java', 1, 'sinamalmir', '2021-07-08', '2021-07-18', 'Returned'),
-(2, 1, 'java', 3, 'mahdidiaromidi', '2021-07-11', '2021-07-21', 'pending'),
-(3, 3, 'php', 1, 'sinamalmir', '2021-07-09', '2021-07-20', 'Returned'),
-(4, 4, 'matlab', 2, 'mahdijalili', '2021-07-10', '2021-07-20', 'pending');
+(1, 1, 'Advanced Java Programing', 1, 'Mahdi', '2021-07-08', '2021-07-18', 'Returned');
 
 
 DROP TABLE IF EXISTS `student_details`;
@@ -53,9 +50,9 @@ CREATE TABLE IF NOT EXISTS `student_details` (
   PRIMARY KEY (`student_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 INSERT INTO `student_details` (`student_id`, `name`, `cours`, `branch`) VALUES
-(1, 'sinamalmir', 'MSC', 'IT'),
-(2, 'mahdijalili', 'PHD', 'ELECTRONICS'),
-(3, 'mahdidiaromidi', 'MSC', 'PLAIN');
+(1, 'Mahdi', 'MSC', 'IT'),
+(2, 'Sina', 'PHD', 'ELECTRONICS'),
+(3, 'M.Mahdi', 'MSC', 'PLAIN');
 
 
 DROP TABLE IF EXISTS `users`;
@@ -68,26 +65,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 INSERT INTO `users` (`id`, `name`, `password`, `email`, `contact`) VALUES
-(1, 'sina', '12', 'sina@gmail', '093535'),
-(2, 'sinamalmir', '12', 'sinamalmir@gmail', '09353535'),
-(3, 'test', 'test', 'test@gmail.com', '0935353535'),
-(5, 'test', 'test', 'test@gmail.com', '09353535'),
-(6, 'ahmad', 'dd', 'dd@gmail.com', '123455'),
-(7, 's', 'ss', 'sina@gmail.com', '123565768'),
-(8, 'test', '12', 're@gmail.com', '1234'),
-(9, 'test', 'test', 'test@gmail.com', '123433333'),
-(10, 'test', 'test', 'test@gmail.com', '903912903'),
-(11, 'reza', 'test', 'test@gmail.com', '903912903'),
-(12, 'test', 'test', 'test@gmail.com', '90353535'),
-(13, 'ali', 'ali', 'ali@gmail.com', '10093909u2402'),
-(14, 'test', 'ali', 'ali@gmail.com', '1232450-t'),
-(15, 'abasboazar', 'abas', 'abas@gmail.com', '19329094040924'),
-(16, 'test', 'twst', 'test@gmail.com', '123293409904'),
-(17, 'mamad', 'test', 'test@gmail.com', '12948248'),
-(18, 'abasboazar2', 'test', 'test@gmail.com', '12948248'),
-(19, 'abas', 'abas', 'abas@gmail.com', '1-093094'),
-(20, 'z', 'z', 'z@gamil.com', '29932924'),
-(21, 'e', 'e', 'e@gmail.com', '2939');
+(1, 'mahdi', '1234', 'mahdi@gmail', '09339676754');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

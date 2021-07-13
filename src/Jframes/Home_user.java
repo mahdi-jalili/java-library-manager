@@ -16,7 +16,6 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 
-
 /**
  *
  * @author sina
@@ -26,126 +25,101 @@ public class Home_user extends javax.swing.JFrame {
     /**
      * Creates new form Home
      */
-    
-    Color mousEntercolor = new Color(0,0,0);
-    Color mouseExitColor = new Color (51,51,51);
-    
+    Color mousEntercolor = new Color(0, 0, 0);
+    Color mouseExitColor = new Color(51, 51, 51);
+
     DefaultTableModel model;
-    
+
     public Home_user() {
         initComponents();
         setBookDetailsToTable();
         setStudentDetailsToTable();
         setDataToCards();
         lbl_profileName.setText(Login.uN);
+    }
+    public void setBookDetailsToTable() {
+        
+        try {
+            Connection con = databaseconnection.getConnection();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("select * from book_details");
+
+            while (rs.next()) {
+                String bookId = rs.getString("book_id");
+                String bookName = rs.getString("book_name");
+                String writer = rs.getString("writer");
+                int quantity = rs.getInt("quantity");
+
+                Object[] obj = {bookId, bookName, writer, quantity};
+
+                model = (DefaultTableModel) tbl_bookDetails.getModel();
+                model.addRow(obj);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error");
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------------------ 
+    public void setStudentDetailsToTable() {
+
+        try {
+
+            Connection con = databaseconnection.getConnection();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("select * from student_details");
+
+            while (rs.next()) {
+                String studentId = rs.getString("student_id");
+                String studentName = rs.getString("name");
+                String cours = rs.getString("cours");
+                String branch = rs.getString("branch");
+
+                Object[] obj = {studentId, studentName, cours, branch};
+
+                model = (DefaultTableModel) tbl_studentDetails.getModel();
+                model.addRow(obj);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error");
+        }
+    }
+    //------------------------------------------------------------------------------------------------------------------------------  
+    public void setDataToCards() {
+
+        Statement st = null;
+        ResultSet rs = null;
+        //gereftan zamane hal
+        long l = System.currentTimeMillis();
+        Date todaysDate = new Date(l);
+
+        try {
+            Connection con = databaseconnection.getConnection();
+            st = con.createStatement();
+
+            rs = st.executeQuery("select * from book_details");
+            rs.last();
+            lbl_noOfBook.setText(Integer.toString(rs.getRow()));
+
+            rs = st.executeQuery("select * from student_details");
+            rs.last();
+            lbl_noOfStudent.setText(Integer.toString(rs.getRow()));
+
+            rs = st.executeQuery("select * from lending_book where status='" + "pending" + "' ");
+            rs.last();
+            lbl_borrowBooks.setText(Integer.toString(rs.getRow()));
+
+            rs = st.executeQuery("select * from lending_book where return_book_datte < '" + todaysDate + "' and status='" + "pending" + "' ");
+            rs.last();
+            lbl_doNotReturn.setText(Integer.toString(rs.getRow()));
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error");
+        }
 
     }
-    
-    public void setBookDetailsToTable(){
-            
-            
-            try{
-                
-                Connection con=databaseconnection.getConnection();
-                Statement st=con.createStatement();
-                ResultSet rs= st.executeQuery("select * from book_details");
-                
-                while(rs.next()){
-                         
-                        String bookId   = rs.getString("book_id");
-                        String bookName = rs.getString("book_name");
-                        String writer   = rs.getString("writer");
-                        int quantity    = rs.getInt("quantity");
-                        
-                        Object[] obj= {bookId,bookName,writer,quantity};
-                        
-                        model =(DefaultTableModel)tbl_bookDetails.getModel();
-                        model.addRow(obj);
-                    
-                }
-                
-            }
-            catch(Exception e){
-                    
-                JOptionPane.showMessageDialog(this,"Error");
-            }
-              
-            
-        }
-    
-   //------------------------------------------------------------------------------------------------------------------------------ 
-    
-    public void setStudentDetailsToTable(){
-            
-            
-            try{
-                
-                Connection con=databaseconnection.getConnection();
-                Statement st=con.createStatement();
-                ResultSet rs= st.executeQuery("select * from student_details");
-                
-                while(rs.next()){
-                         
-                        String studentId   = rs.getString("student_id");
-                        String studentName = rs.getString("name");
-                        String cours       = rs.getString("cours");
-                        String branch      = rs.getString("branch");
-                        
-                        Object[] obj= {studentId,studentName,cours,branch};
-                        
-                        model =(DefaultTableModel)tbl_studentDetails.getModel();
-                        model.addRow(obj);
-                    
-                }
-                
-            }
-            catch(Exception e){
-                    
-                JOptionPane.showMessageDialog(this,"Error");
-            }
-              
-            
-        }
-   
-    
-      //------------------------------------------------------------------------------------------------------------------------------  
-    
-     public void setDataToCards(){
-         
-         Statement st=null;
-         ResultSet rs=null;
-         //gereftan zamane hal
-         long l= System.currentTimeMillis();
-         Date todaysDate= new Date(l);
-         
-         try {
-             Connection con= databaseconnection.getConnection();
-             st= con.createStatement();
-             
-             rs= st.executeQuery("select * from book_details");
-             rs.last();
-             lbl_noOfBook.setText(Integer.toString(rs.getRow()));
-             
-             rs= st.executeQuery("select * from student_details");
-             rs.last();
-             lbl_noOfStudent.setText(Integer.toString(rs.getRow()));
-             
-             rs= st.executeQuery("select * from lending_book where status='"+"pending"+"' ");
-             rs.last();
-             lbl_borrowBooks.setText(Integer.toString(rs.getRow()));
-             
-             rs= st.executeQuery("select * from lending_book where return_book_datte < '"+todaysDate+"' and status='"+"pending"+"' ");
-             rs.last();
-             lbl_doNotReturn.setText(Integer.toString(rs.getRow()));
-             
-         } catch (Exception e) {
-             JOptionPane.showMessageDialog(this,"Error");
-         }
-         
-     }
-     //------------------------------------------------------------------------------------------------------------------------------   
+    //------------------------------------------------------------------------------------------------------------------------------   
 
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -164,7 +138,7 @@ public class Home_user extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
+        logout = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -216,7 +190,7 @@ public class Home_user extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Yu Gothic UI Light", 0, 25)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Library Management System");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 320, 30));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 400, 30));
 
         jLabel6.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 20)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
@@ -261,13 +235,18 @@ public class Home_user extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(102, 102, 255));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel7.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 18)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/icons8_Exit_26px_2.png"))); // NOI18N
-        jLabel7.setText("    Logout");
-        jPanel4.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 200, 40));
+        logout.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 18)); // NOI18N
+        logout.setForeground(new java.awt.Color(255, 255, 255));
+        logout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/icons8_Exit_26px_2.png"))); // NOI18N
+        logout.setText("    Logout");
+        logout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutMouseClicked(evt);
+            }
+        });
+        jPanel4.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 200, 40));
 
-        jPanel3.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 640, 280, 60));
+        jPanel3.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 590, 280, 60));
 
         jPanel5.setBackground(new java.awt.Color(255, 51, 51));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -358,7 +337,7 @@ public class Home_user extends javax.swing.JFrame {
                 jLabel14MouseExited(evt);
             }
         });
-        panel_managestudent.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 230, 40));
+        panel_managestudent.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 240, 40));
 
         jPanel3.add(panel_managestudent, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 280, 60));
 
@@ -424,7 +403,7 @@ public class Home_user extends javax.swing.JFrame {
                 jLabel18MouseExited(evt);
             }
         });
-        panel_viewbook.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 240, 40));
+        panel_viewbook.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 250, 40));
 
         jPanel3.add(panel_viewbook, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 470, 280, 60));
 
@@ -447,7 +426,7 @@ public class Home_user extends javax.swing.JFrame {
 
         jPanel3.add(panel_defaultList, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 280, 60));
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 280, 640));
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 280, -1));
 
         jPanel16.setBackground(new java.awt.Color(255, 255, 255));
         jPanel16.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -637,14 +616,14 @@ public class Home_user extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-            System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
-       
-                All_Book_forUser a=new All_Book_forUser();
-                a.show();
-                
+
+        All_Book_forUser a = new All_Book_forUser();
+        a.show();
+        this.hide();
     }//GEN-LAST:event_jLabel12MouseClicked
 
     private void jLabel12MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseEntered
@@ -660,44 +639,44 @@ public class Home_user extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel14MouseEntered
 
     private void jLabel14MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseExited
-       panel_managestudent.setBackground(mouseExitColor);
+        panel_managestudent.setBackground(mouseExitColor);
     }//GEN-LAST:event_jLabel14MouseExited
 
     private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
-        CompleteInformation c =new CompleteInformation();
+        CompleteInformation c = new CompleteInformation();
         c.show();
-        
+        this.hide();
     }//GEN-LAST:event_jLabel14MouseClicked
 
     private void jLabel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseClicked
-          LendingBookUser lending = new LendingBookUser();
-          lending.show();
-          
+        LendingBookUser lending = new LendingBookUser();
+        lending.show();
+
     }//GEN-LAST:event_jLabel15MouseClicked
 
     private void jLabel15MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseEntered
         panel_issuebook.setBackground(mousEntercolor);
-         
+
     }//GEN-LAST:event_jLabel15MouseEntered
 
     private void jLabel15MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseExited
-         panel_issuebook.setBackground(mouseExitColor);
+        panel_issuebook.setBackground(mouseExitColor);
     }//GEN-LAST:event_jLabel15MouseExited
 
     private void jLabel16MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseEntered
-       panel_returnbook.setBackground(mousEntercolor);
+        panel_returnbook.setBackground(mousEntercolor);
     }//GEN-LAST:event_jLabel16MouseEntered
 
     private void jLabel16MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseExited
-       panel_returnbook.setBackground(mouseExitColor);
+        panel_returnbook.setBackground(mouseExitColor);
     }//GEN-LAST:event_jLabel16MouseExited
 
     private void jLabel18MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseEntered
-          panel_viewbook.setBackground(mousEntercolor);
+        panel_viewbook.setBackground(mousEntercolor);
     }//GEN-LAST:event_jLabel18MouseEntered
 
     private void jLabel18MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseExited
-         panel_viewbook.setBackground(mouseExitColor);
+        panel_viewbook.setBackground(mouseExitColor);
     }//GEN-LAST:event_jLabel18MouseExited
 
     private void jLabel19MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseEntered
@@ -705,26 +684,34 @@ public class Home_user extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel19MouseEntered
 
     private void jLabel19MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseExited
-       panel_defaultList.setBackground(mouseExitColor);
+        panel_defaultList.setBackground(mouseExitColor);
     }//GEN-LAST:event_jLabel19MouseExited
 
     private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
-      
+
     }//GEN-LAST:event_jLabel1MouseEntered
 
     private void jLabel1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseExited
-        
+
     }//GEN-LAST:event_jLabel1MouseExited
 
     private void jLabel16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseClicked
-        ReturnBook_User r= new ReturnBook_User();
+        ReturnBook_User r = new ReturnBook_User();
         r.show();
+        this.hide();
     }//GEN-LAST:event_jLabel16MouseClicked
 
     private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
-       ShowLendingBook sh=new ShowLendingBook();
-       sh.show();
+        ShowLendingBook sh = new ShowLendingBook();
+        sh.show();
+        this.hide();
     }//GEN-LAST:event_jLabel18MouseClicked
+
+    private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
+        Login l = new Login();
+        l.show();
+        this.hide();
+    }//GEN-LAST:event_logoutMouseClicked
 
     /**
      * @param args the command line arguments
@@ -782,7 +769,6 @@ public class Home_user extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -804,6 +790,7 @@ public class Home_user extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_noOfBook;
     private javax.swing.JLabel lbl_noOfStudent;
     private javax.swing.JLabel lbl_profileName;
+    private javax.swing.JLabel logout;
     private javax.swing.JPanel panel_defaultList;
     private javax.swing.JPanel panel_issuebook;
     private javax.swing.JPanel panel_managebook;

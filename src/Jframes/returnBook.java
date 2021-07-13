@@ -19,28 +19,32 @@ public class returnBook extends javax.swing.JFrame {
         initComponents();
     }
 
+    //this method get bookId and studentId from admin show status of book and student
     public void getLendingBookDetails() {
-
         int bookId = Integer.parseInt(txt_bookId.getText());
         int studentId = Integer.parseInt(txt_studentId.getText());
 
         try {
             Connection con = databaseconnection.getConnection();
+            //query used for get all status of book in lending_book
             String sql = "select * from lending_book where book_id = ? and student_id = ? and status = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, bookId);
             ps.setInt(2, studentId);
-            ps.setString(3, "pending");   //this mean the student has not return the book yet :)
+            //this means the student has not return the book yet
+            ps.setString(3, "pending");
 
             ResultSet rs = ps.executeQuery();
 
+            //set all of status of book in textboxes and show for admin
             if (rs.next()) {
-
                 lbl_borrowid.setText(rs.getString("id"));
                 lbl_bookname.setText(rs.getString("book_name"));
                 lbl_studentname.setText(rs.getString("student_name"));
                 lbl_borrowdate.setText(rs.getString("borrow_date"));
                 lbl_returndate.setText(rs.getString("return_book_datte"));
+                lbl_borrowstatus.setText(rs.getString("status"));
+
                 lbl_bookError1.setText("");
 
             } else {
@@ -52,6 +56,8 @@ public class returnBook extends javax.swing.JFrame {
                 lbl_studentname.setText("");
                 lbl_borrowdate.setText("");
                 lbl_returndate.setText("");
+                lbl_borrowstatus.setText("");
+
             }
 
         } catch (Exception e) {
@@ -60,18 +66,19 @@ public class returnBook extends javax.swing.JFrame {
 
     }
 
+    //this method will returned book by admin
     public boolean returnBook() {
-
-        boolean isReturned = false;
-
+        //Variables of class : bookId for bookId and studentId for studentID
         int bookId = Integer.parseInt(txt_bookId.getText());
         int studentId = Integer.parseInt(txt_studentId.getText());
 
+        //make a variable for result
+        boolean isReturned = false;
+
+        //this converted status of book from pending to returned and show all information for admin
         try {
             Connection con = databaseconnection.getConnection();
-
-            // faghat mikham status ro az halate pending be halate return tabdil knm
-            // baghiye fild haro pak nmikonim , kolan mizarim hame record ha sabt she ke betonim hame tarikhche ro namayesh bedim baraye admin
+            //query used for update all status of book and srudent in lending_book
             String sql = "update lending_book set status = ? where book_id =? and student_id = ? and status = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, "Returned");
@@ -94,13 +101,13 @@ public class returnBook extends javax.swing.JFrame {
         return isReturned;
     }
 
-    // update number of book count
+    //this method update number of book count
     public void updateBookCount() {
-
         int bookId = Integer.parseInt(txt_bookId.getText());
 
         try {
             Connection con = databaseconnection.getConnection();
+            //query used for update quantity of book in book_details table
             String sql = "update book_details set quantity = quantity + 1 where book_id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, bookId);
@@ -111,7 +118,7 @@ public class returnBook extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Book count Updated");
 
             } else {
-                JOptionPane.showMessageDialog(this, "can not update the Book count");
+                JOptionPane.showMessageDialog(this, "Can not update the Book count");
 
             }
 
@@ -121,17 +128,18 @@ public class returnBook extends javax.swing.JFrame {
 
     }
 
+    //this method will able to admin to set a "10 days" deadline for return_book date for any student
     public void Extention() {
         int bookId = Integer.parseInt(txt_bookId.getText());
         int studentId = Integer.parseInt(txt_studentId.getText());
 
         try {
             Connection con = databaseconnection.getConnection();
+            //query used for update return_book date and plus date 10 days in book_details table 
             String sql = "UPDATE lending_book SET return_book_datte=DATE_ADD(return_book_datte, INTERVAL 10 DAY) WHERE book_id=? AND student_id=?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, bookId);
             ps.setInt(2, studentId);
-            //ps.setString(3, "pending");   //this mean the student has not return the book yet :)
 
             int rowCount = ps.executeUpdate();
 
@@ -189,6 +197,8 @@ public class returnBook extends javax.swing.JFrame {
         jLabel21 = new javax.swing.JLabel();
         jLabel39 = new javax.swing.JLabel();
         lbl_borrowdate = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        lbl_borrowstatus = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -381,11 +391,11 @@ public class returnBook extends javax.swing.JFrame {
 
         lbl_returndate.setFont(new java.awt.Font("Yu Gothic UI", 0, 20)); // NOI18N
         lbl_returndate.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel7.add(lbl_returndate, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 540, 220, 40));
+        jPanel7.add(lbl_returndate, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 500, 220, 40));
 
         lbl_studentname.setFont(new java.awt.Font("Yu Gothic UI", 0, 20)); // NOI18N
         lbl_studentname.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel7.add(lbl_studentname, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, 220, 40));
+        jPanel7.add(lbl_studentname, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, 220, 40));
 
         jLabel41.setFont(new java.awt.Font("Yu Gothic UI", 0, 20)); // NOI18N
         jLabel41.setForeground(new java.awt.Color(255, 255, 255));
@@ -412,17 +422,26 @@ public class returnBook extends javax.swing.JFrame {
 
         jLabel21.setFont(new java.awt.Font("Yu Gothic UI", 0, 20)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel21.setText("Return Date :");
-        jPanel7.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 490, 130, 40));
+        jLabel21.setText("Status :");
+        jPanel7.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 540, 130, 40));
 
         jLabel39.setFont(new java.awt.Font("Yu Gothic UI", 0, 20)); // NOI18N
         jLabel39.setForeground(new java.awt.Color(255, 255, 255));
         jLabel39.setText("Borrow Date :");
-        jPanel7.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, 130, 40));
+        jPanel7.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 130, 40));
 
         lbl_borrowdate.setFont(new java.awt.Font("Yu Gothic UI", 0, 20)); // NOI18N
         lbl_borrowdate.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel7.add(lbl_borrowdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 440, 220, 40));
+        jPanel7.add(lbl_borrowdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 410, 220, 40));
+
+        jLabel22.setFont(new java.awt.Font("Yu Gothic UI", 0, 20)); // NOI18N
+        jLabel22.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel22.setText("Return Date :");
+        jPanel7.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 460, 130, 40));
+
+        lbl_borrowstatus.setFont(new java.awt.Font("Yu Gothic UI", 0, 20)); // NOI18N
+        lbl_borrowstatus.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel7.add(lbl_borrowstatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 540, 150, 40));
 
         main_panel.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 0, 300, 600));
 
@@ -578,6 +597,7 @@ public class returnBook extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new returnBook().setVisible(true);
+                
             }
         });
     }
@@ -591,6 +611,7 @@ public class returnBook extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
@@ -616,6 +637,7 @@ public class returnBook extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_bookname;
     private javax.swing.JLabel lbl_borrowdate;
     private javax.swing.JLabel lbl_borrowid;
+    private javax.swing.JLabel lbl_borrowstatus;
     private javax.swing.JLabel lbl_returndate;
     private javax.swing.JLabel lbl_studentname;
     private javax.swing.JPanel main_panel;

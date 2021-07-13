@@ -15,7 +15,6 @@ import javax.swing.table.DefaultTableModel;
  *
  */
 public class Borrowed_Books extends javax.swing.JFrame {
-
     /**
      * Creates new form Borrowed_Books
      */
@@ -30,13 +29,11 @@ public class Borrowed_Books extends javax.swing.JFrame {
     public void setBorrowBookDetailsToTable() {
 
         try {
-
             Connection con = databaseconnection.getConnection();
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("select * from lending_book where status= '" + "pending" + "'");
 
             while (rs.next()) {
-
                 String id = rs.getString("id");
                 String bookName = rs.getString("book_name");
                 String studentName = rs.getString("student_name");
@@ -50,12 +47,9 @@ public class Borrowed_Books extends javax.swing.JFrame {
                 model.addRow(obj);
 
             }
-
         } catch (Exception e) {
-
             JOptionPane.showMessageDialog(this, "Error");
         }
-
     }
 
     @SuppressWarnings("unchecked")

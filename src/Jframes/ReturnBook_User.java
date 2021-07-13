@@ -1,4 +1,3 @@
-
 package Jframes;
 
 import java.sql.Connection;
@@ -6,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author sina
@@ -18,120 +18,112 @@ public class ReturnBook_User extends javax.swing.JFrame {
     public ReturnBook_User() {
         initComponents();
     }
-    
-      public void getLendingBookDetails(){
-          
-         
-          
-         int bookId = Integer.parseInt(txt_bookId.getText());
-         int studentId = Integer.parseInt(txt_studentId.getText());
-         
-          try {
-                 Connection con= databaseconnection.getConnection();
-                 String sql= "select * from lending_book where book_id = ? and student_id = ? and status = ?";
-                 PreparedStatement ps= con.prepareStatement(sql);
-                 ps.setInt(1,bookId);
-                 ps.setInt(2,studentId);
-                 ps.setString(3, "pending");   //this mean the student has not return the book yet :)
-                 
-                 ResultSet rs = ps.executeQuery();
-                 
-                 if (rs.next()) {
-                                         
-                     lbl_borrowid.setText(rs.getString("id"));
-                     lbl_bookname.setText(rs.getString("book_name"));
-                     lbl_studentname.setText(rs.getString("student_name"));
-                     lbl_borrowdate.setText(rs.getString("borrow_date"));
-                     lbl_returndate.setText(rs.getString("return_book_datte"));
-                     lbl_bookError1.setText("");
-                     
-              }else{
-                     
-                     lbl_bookError1.setText("No Record Found");
-                     
-                     lbl_borrowid.setText("");
-                     lbl_bookname.setText("");
-                     lbl_studentname.setText("");
-                     lbl_borrowdate.setText("");
-                     lbl_returndate.setText("");
-                 }
-                 
-          } catch (Exception e) {
-                    JOptionPane.showMessageDialog(this,"Error");
-           }
-             
-      }
-      
-      public boolean returnBook(){
-          
-          boolean isReturned = false;
-          
-          int bookId = Integer.parseInt(txt_bookId.getText());
-          int studentId = Integer.parseInt(txt_studentId.getText());
-          
-          try {
-                Connection con = databaseconnection.getConnection();
-                
-                // faghat mikham status ro az halate pending be halate return tabdil knm
-                // baghiye fild haro pak nmikonim , kolan mizarim hame record ha sabt she ke betonim hame tarikhche ro namayesh bedim baraye admin
-                String sql= "update lending_book set status = ? where book_id =? and student_id = ? and status = ?";
-                PreparedStatement ps= con.prepareStatement(sql);
-                ps.setString(1, "Returned");
-                ps.setInt(2, bookId);
-                ps.setInt(3, studentId);
-                ps.setString(4, "pending");
-                
-                
-                int rowCount= ps.executeUpdate();
-                
-                if(rowCount > 0){
-                    isReturned= true; 
-                    
-                }else{
-                    isReturned= false;
-                }
-                
-          } catch (Exception e) {
-              JOptionPane.showConfirmDialog(this,"Error");
-          }
-            return isReturned;
-      }
-    
-    
-    
-    
-    
-    
-   
-    // update number of book count
-    public void updateBookCount(){
-        
-                int bookId = Integer.parseInt(txt_bookId.getText());
-                
-                try {
-                         Connection con= databaseconnection.getConnection();
-                         String sql = "update book_details set quantity = quantity + 1 where book_id = ?";
-                         PreparedStatement ps= con.prepareStatement(sql);
-                         ps.setInt(1, bookId);
-                         
-                         int rowCount = ps.executeUpdate();
-                         
-               if (rowCount > 0 ) {
-                            JOptionPane.showMessageDialog(this,"Book count Updated");
-                            
-            }
-              else{
-                            JOptionPane.showMessageDialog(this,"can not update the Book count");
 
-               }                        
-                         
+    //this method get bookId and studentId from user show status of book that user lended it
+    public void getLendingBookDetails() {
+
+        int bookId = Integer.parseInt(txt_bookId.getText());
+        int studentId = Integer.parseInt(txt_studentId.getText());
+
+        try {
+            Connection con = databaseconnection.getConnection();
+            //query used for get book_id and student_id and status of book in lending_book
+            String sql = "select * from lending_book where book_id = ? and student_id = ? and status = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, bookId);
+            ps.setInt(2, studentId);
+            //this mean the student has not return the book yet
+            ps.setString(3, "pending");
+
+            ResultSet rs = ps.executeQuery();
+
+            //set all of status of book in textboxes and show for user
+            if (rs.next()) {
+                lbl_borrowid.setText(rs.getString("id"));
+                lbl_bookname.setText(rs.getString("book_name"));
+                lbl_studentname.setText(rs.getString("student_name"));
+                lbl_borrowdate.setText(rs.getString("borrow_date"));
+                lbl_returndate.setText(rs.getString("return_book_datte"));
+                lbl_bookError1.setText("");
+
+            } else {
+                lbl_bookError1.setText("No Record Found");
+
+                lbl_borrowid.setText("");
+                lbl_bookname.setText("");
+                lbl_studentname.setText("");
+                lbl_borrowdate.setText("");
+                lbl_returndate.setText("");
+            }
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error");
         }
-        
     }
-    
-    
+
+    //this method will returned book by user
+    public boolean returnBook() {
+
+        int bookId = Integer.parseInt(txt_bookId.getText());
+        int studentId = Integer.parseInt(txt_studentId.getText());
+
+        //make a variable for result
+        boolean isReturned = false;
+
+        //this converted status of book from pending to returned for user
+        try {
+            Connection con = databaseconnection.getConnection();
+            //query used for update all status of book and srudent in lending_book
+            String sql = "update lending_book set status = ? where book_id =? and student_id = ? and status = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, "Returned");
+            ps.setInt(2, bookId);
+            ps.setInt(3, studentId);
+            ps.setString(4, "pending");
+
+            int rowCount = ps.executeUpdate();
+
+            if (rowCount > 0) {
+                isReturned = true;
+
+            } else {
+                isReturned = false;
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(this, "Error");
+        }
+        return isReturned;
+    }
+
+    //this method update number of book count
+    public void updateBookCount() {
+
+        int bookId = Integer.parseInt(txt_bookId.getText());
+
+        try {
+            Connection con = databaseconnection.getConnection();
+            //query used for update quantity of book in book_details table
+            String sql = "update book_details set quantity = quantity + 1 where book_id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, bookId);
+
+            int rowCount = ps.executeUpdate();
+
+            if (rowCount > 0) {
+                JOptionPane.showMessageDialog(this, "Book count Updated");
+
+            } else {
+                JOptionPane.showMessageDialog(this, "can not update the Book count");
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error");
+        }
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -274,7 +266,7 @@ public class ReturnBook_User extends javax.swing.JFrame {
 
         jLabel19.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(255, 51, 51));
-        jLabel19.setText("Enter Student Id :");
+        jLabel19.setText("Enter Your Id :");
         main_panel.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 300, 160, 60));
 
         jPanel7.setBackground(new java.awt.Color(255, 51, 51));
@@ -468,11 +460,11 @@ public class ReturnBook_User extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
-        
-        Home_user h=new Home_user();
+
+        Home_user h = new Home_user();
         h.show();
         this.hide();
-        
+
     }//GEN-LAST:event_jPanel8MouseClicked
 
     private void jPanel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel18MouseClicked
@@ -480,7 +472,7 @@ public class ReturnBook_User extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel18MouseClicked
 
     private void txt_studentIdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_studentIdFocusLost
-               
+
     }//GEN-LAST:event_txt_studentIdFocusLost
 
     private void txt_studentIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_studentIdActionPerformed
@@ -488,8 +480,8 @@ public class ReturnBook_User extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_studentIdActionPerformed
 
     private void txt_bookIdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_bookIdFocusLost
-   
-        
+
+
     }//GEN-LAST:event_txt_bookIdFocusLost
 
     private void txt_bookIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_bookIdActionPerformed
@@ -497,18 +489,17 @@ public class ReturnBook_User extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_bookIdActionPerformed
 
     private void rSMaterialButtonCircle1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle1ActionPerformed
-      
-      getLendingBookDetails();
- 
-            
+
+        getLendingBookDetails();
+
+
     }//GEN-LAST:event_rSMaterialButtonCircle1ActionPerformed
 
     private void rSMaterialButtonCircle2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle2ActionPerformed
         if (returnBook() == true) {
-             JOptionPane.showMessageDialog(this,"Book Returned Successfuly");
-             updateBookCount();
-        }
-        else{
+            JOptionPane.showMessageDialog(this, "Book Returned Successfuly");
+            updateBookCount();
+        } else {
             JOptionPane.showMessageDialog(this, "Book Returnned Failed");
         }
     }//GEN-LAST:event_rSMaterialButtonCircle2ActionPerformed

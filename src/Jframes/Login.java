@@ -1,4 +1,3 @@
-
 package Jframes;
 
 import java.sql.Connection;
@@ -11,108 +10,83 @@ import javax.swing.JOptionPane;
  *
  * @author sina
  */
-
-    
-
 public class Login extends javax.swing.JFrame {
 
     /**
      * Creates new form SignUp
      */
     
-    public static String uN="";
-    
-    
+    //this variable is defined to display the username at the top of the home page
+    public static String uN = "";
+
     public Login() {
         initComponents();
-        
-        
-        
     }
-    
- //-----------------------------------------------------------------------------------------------------------------------------    
-            //validate
-    public boolean validateLogin(){
-        
-        String name=txt_username.getText();
-        String pwd=txt_password.getText();
-        
-        if (name.equals("")){
-            JOptionPane.showMessageDialog(this,"Pleas Entetr Username");
-            return false;
-        }
-        if (pwd.equals("")){
-            JOptionPane.showMessageDialog(this,"Pleas Enter Password");
-            return false;
-        }
-        return true;
-    }
-    
 
-  //-----------------------------------------------------------------------------------------------------------------------------
-    
-      //verify cred
-    
-    public void Login(){
-        
-        String name=txt_username.getText();
-        String pwd=txt_password.getText();
-        
-        try{
-              Connection con =databaseconnection.getConnection();
-              
-              String sql= "select * from users where name=? and password=?";
-              PreparedStatement ps=con.prepareStatement(sql);
-              
-              ps.setString(1,name);
-              ps.setString(2,pwd);
-              
-              uN= txt_username.getText();
-              
-              ResultSet rs=ps.executeQuery();
-        
-              //baraye moshakhas kardane masire admin va user in shart ro gharar midim
-         
-          if (txt_username.getText().equals("admin") && txt_password.getText().equals("admin")) {
-                Home h=new Home();
+    //-----------------------------------------------------------------------------------------------------------------------------    
+    //method to prevent the user from entering incorrect values 
+    public boolean validateLogin() {
+        //Variables of class : name for username, pwd for user password
+        String name = txt_username.getText();
+        String pwd = txt_password.getText();
+        //make a variable for result
+        boolean isExist = true;
+        //if the username box was empty
+        if (name.equals("")) {
+            JOptionPane.showMessageDialog(this, "Pleas Entetr Username");
+            isExist = false;
+        }
+        //if the password box was empty
+        if (pwd.equals("")) {
+            JOptionPane.showMessageDialog(this, "Pleas Enter Password");
+            isExist = false;
+        }
+        return isExist;
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------------
+    //method to username and password verifier
+    public void Login() {
+        //Variables of class : name for username, pwd for user password
+        String name = txt_username.getText();
+        String pwd = txt_password.getText();
+
+        try {
+            Connection con = databaseconnection.getConnection();
+            //used query for name and password in user table
+            String sql = "select * from users where name=? and password=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setString(1, name);
+            ps.setString(2, pwd);
+            //set "name of user" in uN
+            uN = txt_username.getText();
+
+            ResultSet rs = ps.executeQuery();
+
+            //to separate the admin and user paths to show "user home panel" or "admin home panel"
+            if (txt_username.getText().equals("admin") && txt_password.getText().equals("admin")) {
+                Home h = new Home();
                 h.show();
                 this.hide();
-             }
-            else{
-                //this means theere is this username and password in our databas :)
-              if(rs.next()){
-                  JOptionPane.showMessageDialog(this,"Login sucssecfuly");
-                    
-                  Home_user h= new Home_user();
-                  h.show();
-                  this.hide();
-               }
-              else {
-                  JOptionPane.showMessageDialog(this,"Incorrect Usename Or Password");
-              }
-            
+            } else {
+                //this means theere is this username and password in our databas
+                if (rs.next()) {
+                    JOptionPane.showMessageDialog(this, "Login sucssecfuly");
+                    Home_user h = new Home_user();
+                    h.show();
+                    this.hide();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Incorrect Usename Or Password");
+                }
+
             }
-        }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(this,"Error");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error");
         }
     }
-    
-  //-----------------------------------------------------------------------------------------------------------------------------
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+    //-----------------------------------------------------------------------------------------------------------------------------
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -252,7 +226,7 @@ public class Login extends javax.swing.JFrame {
                 password_chekBoxActionPerformed(evt);
             }
         });
-        jPanel2.add(password_chekBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 310, -1, -1));
+        jPanel2.add(password_chekBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 320, -1, -1));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 0, 400, 600));
 
@@ -268,8 +242,8 @@ public class Login extends javax.swing.JFrame {
 
     }//GEN-LAST:event_txt_usernameFocusLost
 
- //-----------------------------------------------------------------------------------------------------------------------------
-    
+    //-----------------------------------------------------------------------------------------------------------------------------
+
     private void rSMaterialButtonCircle2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle2ActionPerformed
 
 
@@ -280,25 +254,22 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void rSMaterialButtonCircle1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle1ActionPerformed
-          if( validateLogin()){
-              Login();
-          } 
+        if (validateLogin()) {
+            Login();
+        }
     }//GEN-LAST:event_rSMaterialButtonCircle1ActionPerformed
 
     private void password_chekBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_password_chekBoxActionPerformed
-
+        //to set visibility of password in password box
         if (password_chekBox.isSelected()) {
             txt_password.setEchoChar('\0');
-
-        }else{
+        } else {
             txt_password.setEchoChar('*');
         }
 
     }//GEN-LAST:event_password_chekBoxActionPerformed
 
 //-----------------------------------------------------------------------------------------------------------------------------
-    
-    
     /**
      * @param args the command line arguments
      */

@@ -172,7 +172,7 @@ public class DoNotReturn extends javax.swing.JFrame {
             .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
         );
 
-        jPanel1.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 0, 150, 50));
+        jPanel1.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 0, 150, 50));
 
         tbl_borrowBookDetails.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -199,11 +199,11 @@ public class DoNotReturn extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tbl_borrowBookDetails);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 960, 400));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 150, 960, 400));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1380, 660));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 660));
 
-        setSize(new java.awt.Dimension(1376, 654));
+        setSize(new java.awt.Dimension(1200, 600));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 

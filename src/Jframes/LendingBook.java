@@ -19,18 +19,19 @@ public class LendingBook extends javax.swing.JFrame {
         initComponents();
     }
 
-    //for give information from database and display that in bookdetail text field
+    //this method get bookId from admin show status of book and student
     public void getBookDetail() {
 
         int bookId = Integer.parseInt(txt_bookId.getText());
 
         try {
             Connection con = databaseconnection.getConnection();
-
+            //query used for get all status of book in lending_book
             PreparedStatement ps = con.prepareStatement("select * from book_details where book_id= ?");
             ps.setInt(1, bookId);
             ResultSet rs = ps.executeQuery();
 
+            //set all of status of book in textboxes and show for admin
             if (rs.next()) {
                 lbl_bookid.setText(rs.getString("book_id"));
                 lbl_bookname.setText(rs.getString("book_name"));
@@ -46,18 +47,19 @@ public class LendingBook extends javax.swing.JFrame {
         }
     }
 
-    //for give information from database and display that in bookdetail text field
+    //this method get UserId from admin show status of book and student
     public void getStudentDetail() {
 
         int studentId = Integer.parseInt(txt_studentId.getText());
 
         try {
             Connection con = databaseconnection.getConnection();
-
+            //query used for get all status of user in student_details
             PreparedStatement ps = con.prepareStatement("select * from student_details where student_id= ?");
             ps.setInt(1, studentId);
             ResultSet rs = ps.executeQuery();
 
+            //set all of status of user in textboxes and show for admin
             if (rs.next()) {
                 lbl_studentid.setText(rs.getString("student_id"));
                 lbl_studentname.setText(rs.getString("name"));
@@ -73,6 +75,7 @@ public class LendingBook extends javax.swing.JFrame {
         }
     }
 
+    //this method will lending book by admin
     public boolean lendingBook() {
         boolean isborrow = false;
 
@@ -84,19 +87,22 @@ public class LendingBook extends javax.swing.JFrame {
         // bayad baraye estefade az class Date ketabkhoneye Date dar java.util ro import konim aval . 
         //chon chizi ke on ghesmate taeiin konnade tarikh return mikone jozve date hastesh
         //va baraye daryaft khoroji on az method getDatefecha estefade mishe
+        //should use util package to get information
         Date lendingDate = date_lendingDate.getDatoFecha();
         Date returnDate = date_returnDate.getDatoFecha();
 
-        //chon date marbot be sql bayad az noe hamon sql bashe taghruban ye castt darim inja 
-        //chin java.sql.date long migire inkaro kardim
+        //Hint : sql package returns Long type
+        //should casting Date to Long
         Long d1 = lendingDate.getTime();
         Long d2 = returnDate.getTime();
 
+        //this way should use java.sql.Date cause the continue of program will not supported by java.sql.Date
         java.sql.Date slendingDate = new java.sql.Date(d1);
         java.sql.Date sreturnDate = new java.sql.Date(d2);
 
         try {
             Connection con = databaseconnection.getConnection();
+            //query to get all information in lending_book table an change status of book to "pending" (infact to lend it) by admin
             String sql = "insert into lending_book(book_id , book_name , student_id , student_name , borrow_date , return_book_datte , status) values(?,?,?,?,?,?,?)";
             PreparedStatement ps = con.prepareStatement(sql);
 
@@ -106,6 +112,7 @@ public class LendingBook extends javax.swing.JFrame {
             ps.setString(4, studentName);
             ps.setDate(5, slendingDate);
             ps.setDate(6, sreturnDate);
+            //change the book status to pending
             ps.setString(7, "pending");
 
             int rowCount = ps.executeUpdate();
@@ -122,13 +129,14 @@ public class LendingBook extends javax.swing.JFrame {
         return isborrow;
     }
 
-    // update number of book count
+    //this method update number of book count
     public void updateBookcount() {
 
         int bookId = Integer.parseInt(txt_bookId.getText());
 
         try {
             Connection con = databaseconnection.getConnection();
+            //query used for update quantity of book in book_details table
             String sql = "update book_details set quantity = quantity - 1 where book_id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, bookId);
@@ -137,9 +145,9 @@ public class LendingBook extends javax.swing.JFrame {
 
             if (rowCount > 0) {
                 JOptionPane.showMessageDialog(this, "Book count Updated");
-                //shomare ghabli ro migirim cast mikonim
+                //get and casting the previous number
                 int initialCount = Integer.parseInt(lbl_quantity.getText());
-                //shomare jadid ro jaygozari mikonim  :)
+                //replace the new number
                 lbl_quantity.setText(Integer.toString(initialCount - 1));
 
             } else {
@@ -153,28 +161,28 @@ public class LendingBook extends javax.swing.JFrame {
 
     }
 
-//    check wheather book already alocated or not
+    //this method checked status of lnding book status and check that book already lended or not
     public boolean isAlreadyBorrow() {
-
-        boolean isAlreadyBorrow = false;
-
         int bookId = Integer.parseInt(txt_bookId.getText());
         int studentId = Integer.parseInt(txt_studentId.getText());
 
+        //make a variable for result
+        boolean isAlreadyBorrow = false;
+
         try {
             Connection con = databaseconnection.getConnection();
+            //query to get book_id and student_id and status in lending_book table
             String sql = "select * from lending_book where book_id = ? and student_id =? and status =? ";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, bookId);
             ps.setInt(2, studentId);
+            //this means the student has not return the book yet
             ps.setString(3, "pending");
 
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-
                 isAlreadyBorrow = true;
-
             } else {
                 isAlreadyBorrow = false;
             }
@@ -836,14 +844,12 @@ public class LendingBook extends javax.swing.JFrame {
 
     private void rSMaterialButtonCircle1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle1ActionPerformed
 
+        //check availability of book
         if (lbl_quantity.getText().equals("0")) {
-
             JOptionPane.showMessageDialog(this, "This Book Not Availible");
         } else {
-
             if (isAlreadyBorrow() == false) {
                 if (lendingBook() == true) {
-
                     JOptionPane.showMessageDialog(this, "Book inserted successfully");
                     updateBookcount();
                 } else {

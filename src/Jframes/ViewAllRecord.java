@@ -30,13 +30,13 @@ public class ViewAllRecord extends javax.swing.JFrame {
     public void setBorrowBookDetailsToTable() {
 
         try {
-
             Connection con = databaseconnection.getConnection();
             Statement st = con.createStatement();
+            //query to get all information of lending_book table
             ResultSet rs = st.executeQuery("select * from lending_book");
 
+            //set all of status of book in textboxes and show for admin in a DefaultTableModel
             while (rs.next()) {
-
                 String id = rs.getString("id");
                 String bookName = rs.getString("book_name");
                 String studentName = rs.getString("student_name");
@@ -58,35 +58,33 @@ public class ViewAllRecord extends javax.swing.JFrame {
 
     }
 
-//method to clear table      
+    //method to clear table      
     public void clearTable() {
 
         DefaultTableModel model = (DefaultTableModel) tbl_borrowBookDetails.getModel();
 
-        //intori tamame history ghabli jadval pak mishe
+        //this means to clear all history in table
         model.setRowCount(0);
-
     }
 
-    //to fetch the record using date fields
+    //this method fetch the record using date fields
     public void search() {
-
-        // baraye gereftan etelaat az package ytil estefade mikonim
+        //should use util package to get information
         Date uFromDate = date_lendingDate.getDatoFecha();
         Date uToDate = date_returndate.getDatoFecha();
 
-        //package sql long haro barmigardone pas variable haye ma bayad be noe long tabdil bashan
+        //Hint : sql package returns Long type
+        //should casting Date to Long
         long u1 = uFromDate.getTime();
         long u2 = uToDate.getTime();
 
-        //baraye estefade az etelaat az package sql estefade mikoim 
-        //chon package java Date ro support nemikone 
+        //this way should use java.sql.Date cause the continue of program will not supported by java.sql.Date
         java.sql.Date fromDate = new java.sql.Date(u1);
         java.sql.Date toDate = new java.sql.Date(u2);
 
         try {
-
             Connection con = databaseconnection.getConnection();
+            //query to get two borrow_date from lending_book table to calculate the dates between them
             String sql = "select * from lending_book where borrow_date BETWEEN ? and ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setDate(1, fromDate);
@@ -94,6 +92,7 @@ public class ViewAllRecord extends javax.swing.JFrame {
 
             ResultSet rs = ps.executeQuery();
 
+            //set all of status of books their lending date is between the two dates, in textboxes and show for admin in a DefaultTableModel
             while (rs.next()) {
                 String id = rs.getString("id");
                 String bookName = rs.getString("book_name");
@@ -114,27 +113,29 @@ public class ViewAllRecord extends javax.swing.JFrame {
 
     }
 
+    //this method find books by return date
     public void findByReturnDate() {
 
-        // baraye gereftan etelaat az package ytil estefade mikonim
+        //should use util package to get information
         Date uReturnDate = date_returnDate2.getDatoFecha();
 
-        //package sql long haro barmigardone pas variable haye ma bayad be noe long tabdil bashan
+        //Hint : sql package returns Long type
+        //should casting Date to Long
         long u = uReturnDate.getTime();
 
-        //baraye estefade az etelaat az package sql estefade mikoim 
-        //chon package java Date ro support nemikone 
+        //this way should use java.sql.Date cause the continue of program will not supported by java.sql.Date
         java.sql.Date Date = new java.sql.Date(u);
 
         try {
-
             Connection con = databaseconnection.getConnection();
+            //query to get return_book_datte in lending_book table
             String sql = "select * from lending_book where return_book_datte=?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setDate(1, Date);
 
             ResultSet rs = ps.executeQuery();
 
+            //set all of status of books that their lending date are our searching date, in textboxes and show for admin in a DefaultTableModel
             while (rs.next()) {
                 String id = rs.getString("id");
                 String bookName = rs.getString("book_name");
@@ -154,19 +155,20 @@ public class ViewAllRecord extends javax.swing.JFrame {
 
     }
 
+    //this method find books by user name
     public void findByUserName() {
-
         String user_id = txt_username.getText();
 
         try {
-
             Connection con = databaseconnection.getConnection();
+            //query to get student_name in lending_book table
             String sql = "select * from lending_book where student_name=?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, user_id);
 
             ResultSet rs = ps.executeQuery();
 
+            //set all of status of books that our user borrow them, in textboxes and show for admin in a DefaultTableModel
             while (rs.next()) {
                 String id = rs.getString("id");
                 String bookName = rs.getString("book_name");
@@ -186,20 +188,22 @@ public class ViewAllRecord extends javax.swing.JFrame {
 
     }
 
+    //this method find pending books by book name
     public void findByBookName() {
-
         String book_id = txt_bookname.getText();
 
         try {
-
             Connection con = databaseconnection.getConnection();
+            //query to get book_name and status in lending_book table
             String sql = "select * from lending_book where book_name=? and status=?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, book_id);
+            //this means the student has not return the book yet
             ps.setString(2, "pending");
 
             ResultSet rs = ps.executeQuery();
-
+            
+            //set all of status of books that in pending status, in textboxes and show for admin in a DefaultTableModel
             while (rs.next()) {
                 String id = rs.getString("id");
                 String bookName = rs.getString("book_name");

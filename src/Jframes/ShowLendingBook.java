@@ -1,7 +1,6 @@
 /*
 in form be ma tamamie ketab haye amanat dade shode ro namayesh mide
-*/
-
+ */
 package Jframes;
 
 import java.sql.Connection;
@@ -13,56 +12,55 @@ import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author sina
- * 
+ *
  */
 public class ShowLendingBook extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Borrowed_Books
-     */
     DefaultTableModel model;
-    
+
     public ShowLendingBook() {
         initComponents();
         setBorrowBookDetailsToTable();
     }
-    
+
     //to set the book details into the table
-    public void setBorrowBookDetailsToTable(){
-            
-            
-            try{
-                
-                Connection con=databaseconnection.getConnection();
-                Statement st=con.createStatement();
-                ResultSet rs= st.executeQuery("select * from lending_book where status= '"+"pending"+"'");
-                
-                while(rs.next()){
-                        
-                        String id          =rs.getString("id");
-                        String bookName   = rs.getString("book_name");
-                        String studentName = rs.getString("student_name");
-                        String lendingDate       = rs.getString("borrow_date");
-                        String returnDate      = rs.getString("return_book_datte");
-                        String status       = rs.getString("status");
-                        
-                        
-                        Object[] obj= {id,bookName,studentName,lendingDate,returnDate,status};
-                        
-                        model =(DefaultTableModel)tbl_borrowBookDetails.getModel();
-                        model.addRow(obj);
-                    
-                }
-                
+    public void setBorrowBookDetailsToTable() {
+
+        try {
+            Connection con = databaseconnection.getConnection();
+            Statement st = con.createStatement();
+            //query to get all books with pending status in lending_book table
+            ResultSet rs = st.executeQuery("select * from lending_book where status= '" + "pending" + "'");
+
+            //set all of status of books that in pending status, in textboxes and show for admin in a DefaultTableModel
+            while (rs.next()) {
+                String bookName = rs.getString("book_name");
+                String studentName = rs.getString("student_name");
+                String lendingDate = rs.getString("borrow_date");
+                String returnDate = rs.getString("return_book_datte");
+
+                Object[] obj = {bookName, studentName, lendingDate, returnDate};
+
+                model = (DefaultTableModel) tbl_borrowBookDetails.getModel();
+                model.addRow(obj);
+
             }
-            catch(Exception e){
-                    
-                JOptionPane.showMessageDialog(this,"Error");
-            }
-              
-            
+
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(this, "Error");
         }
-    
+
+    }
+
+    //method to clear table      
+    public void clearTable() {
+
+        DefaultTableModel model = (DefaultTableModel) tbl_borrowBookDetails.getModel();
+
+        //this means to clear all history in table
+        model.setRowCount(0);
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -77,6 +75,7 @@ public class ShowLendingBook extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbl_borrowBookDetails = new rojeru_san.complementos.RSTableMetro();
+        FindallPendingBooks = new rojerusan.RSMaterialButtonCircle();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -88,8 +87,8 @@ public class ShowLendingBook extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 25)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 51, 51));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/icons8_Books_52px_1.png"))); // NOI18N
-        jLabel2.setText("  ‌Borrow Books Details");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 10, 320, 100));
+        jLabel2.setText("Books in pending status");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, 340, 100));
 
         jPanel17.setBackground(new java.awt.Color(255, 51, 51));
 
@@ -178,7 +177,7 @@ public class ShowLendingBook extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Book Name", "Student Name", "Lending Date", "Return Date", "Status"
+                "Book Name", "Student Name", "Lending Date", "Return Date"
             }
         ));
         tbl_borrowBookDetails.setColorBackgoundHead(new java.awt.Color(102, 102, 255));
@@ -198,7 +197,16 @@ public class ShowLendingBook extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tbl_borrowBookDetails);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 960, 400));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, 960, 400));
+
+        FindallPendingBooks.setBackground(new java.awt.Color(102, 102, 255));
+        FindallPendingBooks.setText("Update");
+        FindallPendingBooks.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FindallPendingBooksActionPerformed(evt);
+            }
+        });
+        jPanel1.add(FindallPendingBooks, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 540, 310, 80));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 660));
 
@@ -207,7 +215,7 @@ public class ShowLendingBook extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
-        Home_user h= new Home_user();
+        Home_user h = new Home_user();
         h.show();
         this.hide();
     }//GEN-LAST:event_jLabel10MouseClicked
@@ -222,7 +230,7 @@ public class ShowLendingBook extends javax.swing.JFrame {
 
     private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
 
-        Home h=new Home();
+        Home h = new Home();
         h.show();
         this.hide();
     }//GEN-LAST:event_jPanel8MouseClicked
@@ -230,6 +238,13 @@ public class ShowLendingBook extends javax.swing.JFrame {
     private void tbl_borrowBookDetailsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_borrowBookDetailsMouseClicked
 
     }//GEN-LAST:event_tbl_borrowBookDetailsMouseClicked
+
+    private void FindallPendingBooksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FindallPendingBooksActionPerformed
+        clearTable();
+        setBorrowBookDetailsToTable();
+
+
+    }//GEN-LAST:event_FindallPendingBooksActionPerformed
 
     /**
      * @param args the command line arguments
@@ -268,6 +283,7 @@ public class ShowLendingBook extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private rojerusan.RSMaterialButtonCircle FindallPendingBooks;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel9;

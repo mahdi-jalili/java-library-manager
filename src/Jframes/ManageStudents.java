@@ -26,12 +26,13 @@ public class ManageStudents extends javax.swing.JFrame {
     }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------    
+    //this method get student id, user name, user cours and user branch from database and show them in a table
     public void setStudentDetailsToTable() {
 
         try {
-
             Connection con = databaseconnection.getConnection();
             Statement st = con.createStatement();
+            //query to get information of users from student_details table
             ResultSet rs = st.executeQuery("select * from student_details");
 
             while (rs.next()) {
@@ -45,19 +46,17 @@ public class ManageStudents extends javax.swing.JFrame {
 
                 model = (DefaultTableModel) tbl_studentdetails.getModel();
                 model.addRow(obj);
-
             }
-
         } catch (Exception e) {
-
             JOptionPane.showMessageDialog(this, "Error");
         }
-
     }
 
     //--------------------------------------------------------------------------------------------------------------------------------------------------------   
+    //this method add a student in database with his student id, user name, user course and user branch in database
     public boolean addStudent() {
 
+        //make a variable for result
         boolean isAdded = false;
 
         studentId = Integer.parseInt(txt_studentid.getText());
@@ -66,8 +65,8 @@ public class ManageStudents extends javax.swing.JFrame {
         branch = combo_branch.getSelectedItem().toString();
 
         try {
-
             Connection con = databaseconnection.getConnection();
+            //query to set information of users in student_details table
             String sql = "insert into student_details values (?,?,?,?)";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, studentId);
@@ -92,9 +91,10 @@ public class ManageStudents extends javax.swing.JFrame {
     }
 
     //--------------------------------------------------------------------------------------------------------------------------------------------------------       
-    //for update table
+    //this method update the table
     public boolean updateStudent() {
 
+        //make a variable for result
         boolean isUpdate = false;
 
         studentId = Integer.parseInt(txt_studentid.getText());
@@ -104,7 +104,7 @@ public class ManageStudents extends javax.swing.JFrame {
 
         try {
             Connection con = databaseconnection.getConnection();
-
+            //query for update information of users in student_details table
             String sql = "update student_details set name=? , cours=? , branch=? where student_id=? ";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, studentName);
@@ -124,24 +124,28 @@ public class ManageStudents extends javax.swing.JFrame {
         return isUpdate;
     }
 
-    //Methos to delete student details
+    //this method delete student by admin
     public boolean deleteStudent() {
 
+        //make a variable for result
         boolean isDelete = false;
 
         studentId = Integer.parseInt(txt_studentid.getText());
 
         try {
             Connection con = databaseconnection.getConnection();
+            //query for delete the user in student_details by useing student_id
             String sql = "delete from student_details where student_id= ?";
             PreparedStatement ps = con.prepareStatement(sql);
 
             ps.setInt(1, studentId);
 
             int roeCount = ps.executeUpdate();
+            //try to delete all users book in pending status
             if (roeCount > 0) {
                 try {
                     Connection con2 = databaseconnection.getConnection();
+                    //query for update status to 'Returned' in lending_book by student_id (by admin)
                     String sql2 = "UPDATE lending_book set status='Returned' WHERE student_id=?";
                     PreparedStatement st = con2.prepareStatement(sql2);
                     st.setInt(1, studentId);
@@ -166,17 +170,11 @@ public class ManageStudents extends javax.swing.JFrame {
         return isDelete;
     }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
-//for remove hustory of table
-
+    //this method clear the table
     public void clearTable() {
-
         DefaultTableModel model = (DefaultTableModel) tbl_studentdetails.getModel();
-
-        //intori tamame history ghabli jadval pak mishe
         model.setRowCount(0);
-
     }
-
     //--------------------------------------------------------------------------------------------------------------------------------------------------------       
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
