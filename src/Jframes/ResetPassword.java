@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
  *
  * @author sina
  */
-public class Login extends javax.swing.JFrame {
+public class ResetPassword extends javax.swing.JFrame {
 
     /**
      * Creates new form SignUp
@@ -18,16 +18,18 @@ public class Login extends javax.swing.JFrame {
     //this variable is defined to display the username at the top of the home page
     public static String uN = "";
 
-    public Login() {
+    public ResetPassword() {
         initComponents();
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------    
     //method to prevent the user from entering incorrect values 
-    public boolean validateLogin() {
-        //Variables of method : name for username, pwd for user password
+    public boolean validateReset() {
+        //Variables of method : name for username, oldPwd for user oldpassword, newPwd for user newpassword
         String name = txt_username.getText();
-        String pwd = txt_password.getText();
+        String oldPwd = txt_oldpassword.getText();
+        String newPwd = txt_newpassword.getText();
+
         //make a variable for result
         boolean isExist = true;
         //if the username box was empty
@@ -35,8 +37,13 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Pleas Entetr Username");
             isExist = false;
         }
-        //if the password box was empty
-        if (pwd.equals("")) {
+        //if the oldpassword box was empty
+        if (oldPwd.equals("")) {
+            JOptionPane.showMessageDialog(this, "Pleas Enter Password");
+            isExist = false;
+        }
+        //if the newpassword box was empty
+        if (newPwd.equals("")) {
             JOptionPane.showMessageDialog(this, "Pleas Enter Password");
             isExist = false;
         }
@@ -44,45 +51,45 @@ public class Login extends javax.swing.JFrame {
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------
-    //method to username and password verifier
-    public void Login() {
-        //Variables of method : name for username, pwd for user password
+    //method to username and oldpassword and newpassword verifier
+    public void ResetPass() {
+        //Variables of method : name for username, oldPwd for user oldpassword, newPwd for user newpassword
         String name = txt_username.getText();
-        String pwd = txt_password.getText();
+        String oldPwd = txt_oldpassword.getText();
+        String newPwd = txt_newpassword.getText();
 
         try {
             Connection con = databaseconnection.getConnection();
             //used query for name and password in user table
-            String sql = "select * from users where name=? and password=?";
+            //         String sql = "update users set password = '" + "newPwd" + "' where name = ?";
+            String sql = " update users set password = ? where name=?";
+
             PreparedStatement ps = con.prepareStatement(sql);
 
-            ps.setString(1, name);
-            ps.setString(2, pwd);
+            ps.setString(1, newPwd);
+            ps.setString(2, name);
+
+            //    ps.setString(2, oldPwd);
+            //    ps.setString(2, oldPwd);
             //set "name of user" in uN
-            uN = txt_username.getText();
+            //  uN = txt_username.getText();
+            int ResultSet = ps.executeUpdate();
 
-            ResultSet rs = ps.executeQuery();
-
-            //to separate the admin and user paths to show "user home panel" or "admin home panel"
-            if (txt_username.getText().equals("admin") && txt_password.getText().equals("admin")) {
-                Home h = new Home();
-                h.show();
+            //this means theere is this username and password in our databas            
+            if (ResultSet > 0) {
+                JOptionPane.showMessageDialog(this, "Reset Password Sucssecfuly, Now Login Your Account");
+                Login L = new Login();
+                L.show();
                 this.hide();
             } else {
-                //this means theere is this username and password in our databas
-                if (rs.next()) {
-                    JOptionPane.showMessageDialog(this, "Login sucssecfuly");
-                    Home_user h = new Home_user();
-                    h.show();
-                    this.hide();
-                } else {
-                    JOptionPane.showMessageDialog(this, "Incorrect Usename Or Password");
-                }
-
+                JOptionPane.showMessageDialog(this, "Incorrect Usename Or Password");
             }
+
         } catch (Exception e) {
+            System.out.println(e);
             JOptionPane.showMessageDialog(this, "Error");
         }
+
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------
@@ -110,9 +117,12 @@ public class Login extends javax.swing.JFrame {
         rSMaterialButtonCircle2 = new rojerusan.RSMaterialButtonCircle();
         txt_username = new app.bolivia.swing.JCTextField();
         jLabel16 = new javax.swing.JLabel();
-        txt_password = new rojerusan.RSPasswordTextPlaceHolder();
+        txt_oldpassword = new rojerusan.RSPasswordTextPlaceHolder();
         password_chekBox = new javax.swing.JCheckBox();
-        rSMaterialButtonCircle3 = new rojerusan.RSMaterialButtonCircle();
+        jLabel12 = new javax.swing.JLabel();
+        txt_newpassword = new rojerusan.RSPasswordTextPlaceHolder();
+        password_chekBox1 = new javax.swing.JCheckBox();
+        jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -132,7 +142,7 @@ public class Login extends javax.swing.JFrame {
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 80, 30));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/library-3.png.png"))); // NOI18N
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 760, 540));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 760, 540));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 600));
 
@@ -143,7 +153,7 @@ public class Login extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_Account_50px.png"))); // NOI18N
         jLabel4.setText("Username");
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 210, 50, 50));
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 170, 50, 50));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 30)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -157,24 +167,24 @@ public class Login extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Login To your Account");
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 200, 30));
+        jLabel6.setText("Reset your passwprd now");
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 90, 230, 30));
 
         jLabel8.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Username");
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 190, 100, 30));
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 150, 100, 30));
 
         jLabel10.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("Password");
-        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 290, 100, 30));
+        jLabel10.setText("New Password");
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 310, 130, 30));
 
         jLabel11.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_Secure_50px.png"))); // NOI18N
         jLabel11.setText("Username");
-        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 310, 50, 50));
+        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 320, 50, 50));
 
         rSMaterialButtonCircle1.setBackground(new java.awt.Color(51, 51, 255));
         rSMaterialButtonCircle1.setText("Login");
@@ -186,7 +196,7 @@ public class Login extends javax.swing.JFrame {
         jPanel2.add(rSMaterialButtonCircle1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 410, 240, 60));
 
         rSMaterialButtonCircle2.setBackground(new java.awt.Color(255, 51, 51));
-        rSMaterialButtonCircle2.setText("Signup");
+        rSMaterialButtonCircle2.setText("Reset Password");
         rSMaterialButtonCircle2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rSMaterialButtonCircle2ActionPerformed(evt);
@@ -207,18 +217,18 @@ public class Login extends javax.swing.JFrame {
                 txt_usernameActionPerformed(evt);
             }
         });
-        jPanel2.add(txt_username, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 220, 220, 40));
+        jPanel2.add(txt_username, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 180, 220, 40));
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 25)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel16.setText("Login Page");
-        jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 70, 130, 40));
+        jLabel16.setText("Reset Password Page");
+        jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 260, 40));
 
-        txt_password.setBackground(new java.awt.Color(102, 102, 255));
-        txt_password.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
-        txt_password.setForeground(new java.awt.Color(0, 0, 0));
-        txt_password.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        jPanel2.add(txt_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 320, 230, 30));
+        txt_oldpassword.setBackground(new java.awt.Color(102, 102, 255));
+        txt_oldpassword.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_oldpassword.setForeground(new java.awt.Color(0, 0, 0));
+        txt_oldpassword.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jPanel2.add(txt_oldpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 260, 230, 30));
 
         password_chekBox.setBackground(new java.awt.Color(102, 102, 255));
         password_chekBox.addActionListener(new java.awt.event.ActionListener() {
@@ -226,16 +236,32 @@ public class Login extends javax.swing.JFrame {
                 password_chekBoxActionPerformed(evt);
             }
         });
-        jPanel2.add(password_chekBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 320, -1, -1));
+        jPanel2.add(password_chekBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 270, -1, -1));
 
-        rSMaterialButtonCircle3.setBackground(new java.awt.Color(255, 51, 51));
-        rSMaterialButtonCircle3.setText("Reset Password");
-        rSMaterialButtonCircle3.addActionListener(new java.awt.event.ActionListener() {
+        jLabel12.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setText("Old Password");
+        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 230, 130, 30));
+
+        txt_newpassword.setBackground(new java.awt.Color(102, 102, 255));
+        txt_newpassword.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_newpassword.setForeground(new java.awt.Color(0, 0, 0));
+        txt_newpassword.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jPanel2.add(txt_newpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 340, 230, 30));
+
+        password_chekBox1.setBackground(new java.awt.Color(102, 102, 255));
+        password_chekBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rSMaterialButtonCircle3ActionPerformed(evt);
+                password_chekBox1ActionPerformed(evt);
             }
         });
-        jPanel2.add(rSMaterialButtonCircle3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 530, 240, 60));
+        jPanel2.add(password_chekBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 350, -1, -1));
+
+        jLabel13.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_Secure_50px.png"))); // NOI18N
+        jLabel13.setText("Username");
+        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 250, 50, 50));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 0, 400, 600));
 
@@ -251,42 +277,49 @@ public class Login extends javax.swing.JFrame {
 
     }//GEN-LAST:event_txt_usernameFocusLost
 
-    //-----------------------------------------------------------------------------------------------------------------------------
-
-    private void rSMaterialButtonCircle2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle2ActionPerformed
-        SignUp h = new SignUp();
-        h.show();
-        this.hide();
-
-
-    }//GEN-LAST:event_rSMaterialButtonCircle2ActionPerformed
-
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         System.exit(0);
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void rSMaterialButtonCircle1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle1ActionPerformed
-        if (validateLogin()) {
-            Login();
-        }
+        Login L = new Login();
+        L.show();
+        this.hide();
+
     }//GEN-LAST:event_rSMaterialButtonCircle1ActionPerformed
 
     private void password_chekBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_password_chekBoxActionPerformed
         //to set visibility of password in password box
         if (password_chekBox.isSelected()) {
-            txt_password.setEchoChar('\0');
+            txt_oldpassword.setEchoChar('\0');
         } else {
-            txt_password.setEchoChar('*');
+            txt_oldpassword.setEchoChar('*');
         }
 
     }//GEN-LAST:event_password_chekBoxActionPerformed
 
-    private void rSMaterialButtonCircle3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle3ActionPerformed
+    private void password_chekBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_password_chekBox1ActionPerformed
+        //to set visibility of password in password box
+        if (password_chekBox.isSelected()) {
+            txt_newpassword.setEchoChar('\0');
+        } else {
+            txt_newpassword.setEchoChar('*');
+        }
+    }//GEN-LAST:event_password_chekBox1ActionPerformed
 
-        ResetPassword rs = new ResetPassword();
-        rs.show();
-        this.hide();
-    }//GEN-LAST:event_rSMaterialButtonCircle3ActionPerformed
+    //-----------------------------------------------------------------------------------------------------------------------------
+
+    private void rSMaterialButtonCircle2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle2ActionPerformed
+
+        if (validateReset()) {
+            ResetPass();
+            Login L = new Login();
+            L.show();
+            this.hide();
+        } else {
+        }
+
+    }//GEN-LAST:event_rSMaterialButtonCircle2ActionPerformed
 
 //-----------------------------------------------------------------------------------------------------------------------------
     /**
@@ -306,20 +339,22 @@ public class Login extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResetPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResetPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResetPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ResetPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new Login().setVisible(true);
+            new ResetPassword().setVisible(true);
         });
     }
 
@@ -327,6 +362,8 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -337,10 +374,11 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JCheckBox password_chekBox;
+    private javax.swing.JCheckBox password_chekBox1;
     private rojerusan.RSMaterialButtonCircle rSMaterialButtonCircle1;
     private rojerusan.RSMaterialButtonCircle rSMaterialButtonCircle2;
-    private rojerusan.RSMaterialButtonCircle rSMaterialButtonCircle3;
-    private rojerusan.RSPasswordTextPlaceHolder txt_password;
+    private rojerusan.RSPasswordTextPlaceHolder txt_newpassword;
+    private rojerusan.RSPasswordTextPlaceHolder txt_oldpassword;
     private app.bolivia.swing.JCTextField txt_username;
     // End of variables declaration//GEN-END:variables
 }

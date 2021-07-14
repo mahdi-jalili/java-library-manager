@@ -21,15 +21,15 @@ public class returnBook extends javax.swing.JFrame {
 
     //this method get bookId and studentId from admin show status of book and student
     public void getLendingBookDetails() {
-        int bookId = Integer.parseInt(txt_bookId.getText());
+        String bookName = txt_bookName.getText();
         int studentId = Integer.parseInt(txt_studentId.getText());
 
         try {
             Connection con = databaseconnection.getConnection();
             //query used for get all status of book in lending_book
-            String sql = "select * from lending_book where book_id = ? and student_id = ? and status = ?";
+            String sql = "select * from lending_book where book_name = ? and student_id = ? and status = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, bookId);
+            ps.setString(1, bookName);
             ps.setInt(2, studentId);
             //this means the student has not return the book yet
             ps.setString(3, "pending");
@@ -68,8 +68,7 @@ public class returnBook extends javax.swing.JFrame {
 
     //this method will returned book by admin
     public boolean returnBook() {
-        //Variables of class : bookId for bookId and studentId for studentID
-        int bookId = Integer.parseInt(txt_bookId.getText());
+        String bookName = txt_bookName.getText();
         int studentId = Integer.parseInt(txt_studentId.getText());
 
         //make a variable for result
@@ -79,10 +78,10 @@ public class returnBook extends javax.swing.JFrame {
         try {
             Connection con = databaseconnection.getConnection();
             //query used for update all status of book and srudent in lending_book
-            String sql = "update lending_book set status = ? where book_id =? and student_id = ? and status = ?";
+            String sql = "update lending_book set status = ? where book_name =? and student_id = ? and status = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, "Returned");
-            ps.setInt(2, bookId);
+            ps.setString(2, bookName);
             ps.setInt(3, studentId);
             ps.setString(4, "pending");
 
@@ -103,14 +102,15 @@ public class returnBook extends javax.swing.JFrame {
 
     //this method update number of book count
     public void updateBookCount() {
-        int bookId = Integer.parseInt(txt_bookId.getText());
+
+        String bookName = txt_bookName.getText();
 
         try {
             Connection con = databaseconnection.getConnection();
             //query used for update quantity of book in book_details table
-            String sql = "update book_details set quantity = quantity + 1 where book_id = ?";
+            String sql = "update book_details set quantity = quantity + 1 where book_name = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, bookId);
+            ps.setString(1, bookName);
 
             int rowCount = ps.executeUpdate();
 
@@ -130,15 +130,15 @@ public class returnBook extends javax.swing.JFrame {
 
     //this method will able to admin to set a "10 days" deadline for return_book date for any student
     public void Extention() {
-        int bookId = Integer.parseInt(txt_bookId.getText());
+        String bookName = txt_bookName.getText();
         int studentId = Integer.parseInt(txt_studentId.getText());
-
+        
         try {
             Connection con = databaseconnection.getConnection();
             //query used for update return_book date and plus date 10 days in book_details table 
-            String sql = "UPDATE lending_book SET return_book_datte=DATE_ADD(return_book_datte, INTERVAL 10 DAY) WHERE book_id=? AND student_id=?";
+            String sql = "UPDATE lending_book SET return_book_datte=DATE_ADD(return_book_datte, INTERVAL 10 DAY) WHERE book_name=? AND student_id=?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, bookId);
+            ps.setString(1, bookName);
             ps.setInt(2, studentId);
 
             int rowCount = ps.executeUpdate();
@@ -170,7 +170,7 @@ public class returnBook extends javax.swing.JFrame {
         jPanel18 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         txt_studentId = new app.bolivia.swing.JCTextField();
-        txt_bookId = new app.bolivia.swing.JCTextField();
+        txt_bookName = new app.bolivia.swing.JCTextField();
         jLabel13 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
@@ -278,25 +278,25 @@ public class returnBook extends javax.swing.JFrame {
         });
         main_panel.add(txt_studentId, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 340, 300, 40));
 
-        txt_bookId.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 51, 51)));
-        txt_bookId.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        txt_bookId.setPlaceholder("Enter Student id...");
-        txt_bookId.addFocusListener(new java.awt.event.FocusAdapter() {
+        txt_bookName.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 51, 51)));
+        txt_bookName.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        txt_bookName.setPlaceholder("Enter Name Of Book You Want Return...");
+        txt_bookName.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                txt_bookIdFocusLost(evt);
+                txt_bookNameFocusLost(evt);
             }
         });
-        txt_bookId.addActionListener(new java.awt.event.ActionListener() {
+        txt_bookName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_bookIdActionPerformed(evt);
+                txt_bookNameActionPerformed(evt);
             }
         });
-        main_panel.add(txt_bookId, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 250, 300, 40));
+        main_panel.add(txt_bookName, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 250, 300, 40));
 
         jLabel13.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 51, 51));
-        jLabel13.setText("Enter Book Id :");
-        main_panel.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 200, 160, 60));
+        jLabel13.setText("Enter Book Name :");
+        main_panel.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 200, 180, 60));
 
         jLabel19.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(255, 51, 51));
@@ -536,14 +536,14 @@ public class returnBook extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_studentIdActionPerformed
 
-    private void txt_bookIdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_bookIdFocusLost
+    private void txt_bookNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_bookNameFocusLost
 
 
-    }//GEN-LAST:event_txt_bookIdFocusLost
+    }//GEN-LAST:event_txt_bookNameFocusLost
 
-    private void txt_bookIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_bookIdActionPerformed
+    private void txt_bookNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_bookNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_bookIdActionPerformed
+    }//GEN-LAST:event_txt_bookNameActionPerformed
 
     private void rSMaterialButtonCircle1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle1ActionPerformed
 
@@ -563,6 +563,7 @@ public class returnBook extends javax.swing.JFrame {
 
     private void ExtentionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExtentionActionPerformed
         // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "Please pay attention that you must extention the return date just one time for user");
         Extention();
     }//GEN-LAST:event_ExtentionActionPerformed
 
@@ -597,7 +598,7 @@ public class returnBook extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new returnBook().setVisible(true);
-                
+
             }
         });
     }
@@ -643,7 +644,7 @@ public class returnBook extends javax.swing.JFrame {
     private javax.swing.JPanel main_panel;
     private rojerusan.RSMaterialButtonCircle rSMaterialButtonCircle1;
     private rojerusan.RSMaterialButtonCircle rSMaterialButtonCircle2;
-    private app.bolivia.swing.JCTextField txt_bookId;
+    private app.bolivia.swing.JCTextField txt_bookName;
     private app.bolivia.swing.JCTextField txt_studentId;
     // End of variables declaration//GEN-END:variables
 }

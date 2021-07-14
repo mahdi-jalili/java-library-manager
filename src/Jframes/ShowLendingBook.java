@@ -29,8 +29,8 @@ public class ShowLendingBook extends javax.swing.JFrame {
         try {
             Connection con = databaseconnection.getConnection();
             Statement st = con.createStatement();
-            //query to get all books with pending status in lending_book table
-            ResultSet rs = st.executeQuery("select * from lending_book where status= '" + "pending" + "'");
+            //query to get all books status in lending_book table
+            ResultSet rs = st.executeQuery("select * from lending_book");
 
             //set all of status of books that in pending status, in textboxes and show for admin in a DefaultTableModel
             while (rs.next()) {
@@ -38,8 +38,9 @@ public class ShowLendingBook extends javax.swing.JFrame {
                 String studentName = rs.getString("student_name");
                 String lendingDate = rs.getString("borrow_date");
                 String returnDate = rs.getString("return_book_datte");
+                String status = rs.getString("status");
 
-                Object[] obj = {bookName, studentName, lendingDate, returnDate};
+                Object[] obj = {bookName, studentName, lendingDate, returnDate, status};
 
                 model = (DefaultTableModel) tbl_borrowBookDetails.getModel();
                 model.addRow(obj);
@@ -47,7 +48,7 @@ public class ShowLendingBook extends javax.swing.JFrame {
             }
 
         } catch (Exception e) {
-
+            System.out.println(e);
             JOptionPane.showMessageDialog(this, "Error");
         }
 
@@ -177,7 +178,7 @@ public class ShowLendingBook extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Book Name", "Student Name", "Lending Date", "Return Date"
+                "Book Name", "Student Name", "Lending Date", "Return Date", "status"
             }
         ));
         tbl_borrowBookDetails.setColorBackgoundHead(new java.awt.Color(102, 102, 255));
@@ -215,7 +216,7 @@ public class ShowLendingBook extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
-        Home_user h = new Home_user();
+        Home h = new Home();
         h.show();
         this.hide();
     }//GEN-LAST:event_jLabel10MouseClicked

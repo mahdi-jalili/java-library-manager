@@ -26,7 +26,7 @@ public class ViewAllRecord extends javax.swing.JFrame {
     }
 
     //--------------------------------------------------------------------------------------------------------------------------------------------------------    
-    //to set the book details into the table
+    //to get the book details into the table
     public void setBorrowBookDetailsToTable() {
 
         try {
@@ -48,21 +48,16 @@ public class ViewAllRecord extends javax.swing.JFrame {
 
                 model = (DefaultTableModel) tbl_borrowBookDetails.getModel();
                 model.addRow(obj);
-
             }
-
         } catch (Exception e) {
-
             JOptionPane.showMessageDialog(this, "Error");
         }
-
     }
 
     //method to clear table      
     public void clearTable() {
 
         DefaultTableModel model = (DefaultTableModel) tbl_borrowBookDetails.getModel();
-
         //this means to clear all history in table
         model.setRowCount(0);
     }
@@ -105,12 +100,10 @@ public class ViewAllRecord extends javax.swing.JFrame {
 
                 model = (DefaultTableModel) tbl_borrowBookDetails.getModel();
                 model.addRow(obj);
-
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error");
         }
-
     }
 
     //this method find books by return date
@@ -152,11 +145,11 @@ public class ViewAllRecord extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error");
         }
-
     }
 
     //this method find books by user name
     public void findByUserName() {
+        
         String user_id = txt_username.getText();
 
         try {
@@ -190,14 +183,15 @@ public class ViewAllRecord extends javax.swing.JFrame {
 
     //this method find pending books by book name
     public void findByBookName() {
-        String book_id = txt_bookname.getText();
+        
+        String book_Name = txt_bookName.getText();
 
         try {
             Connection con = databaseconnection.getConnection();
             //query to get book_name and status in lending_book table
             String sql = "select * from lending_book where book_name=? and status=?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, book_id);
+            ps.setString(1, book_Name);
             //this means the student has not return the book yet
             ps.setString(2, "pending");
 
@@ -247,7 +241,7 @@ public class ViewAllRecord extends javax.swing.JFrame {
         kButton3 = new com.k33ptoo.components.KButton();
         txt_username = new app.bolivia.swing.JCTextField();
         jLabel16 = new javax.swing.JLabel();
-        txt_bookname = new app.bolivia.swing.JCTextField();
+        txt_bookName = new app.bolivia.swing.JCTextField();
         kButton4 = new com.k33ptoo.components.KButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -457,20 +451,20 @@ public class ViewAllRecord extends javax.swing.JFrame {
         jLabel16.setText("Student Name :");
         jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 150, 60));
 
-        txt_bookname.setBackground(new java.awt.Color(102, 102, 255));
-        txt_bookname.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
-        txt_bookname.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        txt_bookname.addFocusListener(new java.awt.event.FocusAdapter() {
+        txt_bookName.setBackground(new java.awt.Color(102, 102, 255));
+        txt_bookName.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_bookName.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        txt_bookName.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                txt_booknameFocusLost(evt);
+                txt_bookNameFocusLost(evt);
             }
         });
-        txt_bookname.addActionListener(new java.awt.event.ActionListener() {
+        txt_bookName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_booknameActionPerformed(evt);
+                txt_bookNameActionPerformed(evt);
             }
         });
-        jPanel1.add(txt_bookname, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 340, 230, 40));
+        jPanel1.add(txt_bookName, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 340, 230, 40));
 
         kButton4.setText("Find by Name");
         kButton4.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
@@ -578,13 +572,13 @@ public class ViewAllRecord extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_usernameActionPerformed
 
-    private void txt_booknameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_booknameFocusLost
+    private void txt_bookNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_bookNameFocusLost
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_booknameFocusLost
+    }//GEN-LAST:event_txt_bookNameFocusLost
 
-    private void txt_booknameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_booknameActionPerformed
+    private void txt_bookNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_bookNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_booknameActionPerformed
+    }//GEN-LAST:event_txt_bookNameActionPerformed
 
     private void kButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton4ActionPerformed
         // TODO add your handling code here:
@@ -648,7 +642,7 @@ public class ViewAllRecord extends javax.swing.JFrame {
     private com.k33ptoo.components.KButton kButton3;
     private com.k33ptoo.components.KButton kButton4;
     private rojeru_san.complementos.RSTableMetro tbl_borrowBookDetails;
-    private app.bolivia.swing.JCTextField txt_bookname;
+    private app.bolivia.swing.JCTextField txt_bookName;
     private app.bolivia.swing.JCTextField txt_username;
     // End of variables declaration//GEN-END:variables
 }

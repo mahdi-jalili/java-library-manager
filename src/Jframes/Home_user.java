@@ -37,8 +37,9 @@ public class Home_user extends javax.swing.JFrame {
         setDataToCards();
         lbl_profileName.setText(Login.uN);
     }
+
     public void setBookDetailsToTable() {
-        
+
         try {
             Connection con = databaseconnection.getConnection();
             Statement st = con.createStatement();
@@ -64,7 +65,6 @@ public class Home_user extends javax.swing.JFrame {
     public void setStudentDetailsToTable() {
 
         try {
-
             Connection con = databaseconnection.getConnection();
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("select * from student_details");
@@ -84,6 +84,7 @@ public class Home_user extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error");
         }
     }
+
     //------------------------------------------------------------------------------------------------------------------------------  
     public void setDataToCards() {
 
@@ -196,7 +197,7 @@ public class Home_user extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/male_user_50px.png"))); // NOI18N
         jLabel6.setText("Welcome , ");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 0, 160, 50));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 0, 160, 50));
 
         jLabel1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 40)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -219,7 +220,7 @@ public class Home_user extends javax.swing.JFrame {
 
         lbl_profileName.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 20)); // NOI18N
         lbl_profileName.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel1.add(lbl_profileName, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 0, 70, 50));
+        jPanel1.add(lbl_profileName, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 0, 160, 50));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 50));
 
@@ -381,7 +382,7 @@ public class Home_user extends javax.swing.JFrame {
                 jLabel16MouseExited(evt);
             }
         });
-        panel_returnbook.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 200, 40));
+        panel_returnbook.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 200, 40));
 
         jPanel3.add(panel_returnbook, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 280, 60));
 
@@ -415,6 +416,9 @@ public class Home_user extends javax.swing.JFrame {
         jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/icons8_Conference_26px.png"))); // NOI18N
         jLabel19.setText("    Do Not Return");
         jLabel19.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel19MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jLabel19MouseEntered(evt);
             }
@@ -422,7 +426,7 @@ public class Home_user extends javax.swing.JFrame {
                 jLabel19MouseExited(evt);
             }
         });
-        panel_defaultList.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 200, 40));
+        panel_defaultList.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 250, 50));
 
         jPanel3.add(panel_defaultList, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 280, 60));
 
@@ -653,10 +657,9 @@ public class Home_user extends javax.swing.JFrame {
         lending.show();
 
     }//GEN-LAST:event_jLabel15MouseClicked
-
+   
     private void jLabel15MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseEntered
         panel_issuebook.setBackground(mousEntercolor);
-
     }//GEN-LAST:event_jLabel15MouseEntered
 
     private void jLabel15MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseExited
@@ -702,8 +705,8 @@ public class Home_user extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel16MouseClicked
 
     private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
-        ShowLendingBook sh = new ShowLendingBook();
-        sh.show();
+        DoNotReturn dnr = new DoNotReturn();
+        dnr.show();
         this.hide();
     }//GEN-LAST:event_jLabel18MouseClicked
 
@@ -712,6 +715,12 @@ public class Home_user extends javax.swing.JFrame {
         l.show();
         this.hide();
     }//GEN-LAST:event_logoutMouseClicked
+
+    private void jLabel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseClicked
+        // TODO add your handling code here:
+        DoNotReturn dnr = new DoNotReturn();
+        dnr.show();
+    }//GEN-LAST:event_jLabel19MouseClicked
 
     /**
      * @param args the command line arguments

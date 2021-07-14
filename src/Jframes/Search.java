@@ -19,17 +19,17 @@ public class Search extends javax.swing.JFrame {
         initComponents();
     }
 
-    //method to find books with the book_name
+    //peyda kardane ketab az roye name ketab
     public void searchBook() {
-        //Variables of class : bookname for bookname, writer for writername
-        String bookname = txt_searchbook.getText();
+
+        String bookName = txt_searchbook.getText();
+        String writer = txt_searchwriter.getText();
 
         try {
             Connection con = databaseconnection.getConnection();
-            //used query for bookname in book_details table
-            String sql = "select book_name from book_details where book_name like ?";
+            String sql = "select * from book_details where Book_name like ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, "%" + bookname + "%");
+            ps.setString(1, "%" + bookName + "%");
 
             ResultSet rs = ps.executeQuery();
 
@@ -40,7 +40,13 @@ public class Search extends javax.swing.JFrame {
             }
 
             while (rs.next()) {
-                model.addRow(new Object[]{rs.getString("book_name")});
+                String bookId = rs.getString("book_id");
+                String bookNamee = rs.getString("Book_name");
+                String writerr = rs.getString("writer");
+                String quantity = rs.getString("quantity");
+
+                Object[] obj = {bookId, bookNamee, writerr, quantity};
+                model.addRow(obj);
             }
 
         } catch (Exception e) {
@@ -52,28 +58,35 @@ public class Search extends javax.swing.JFrame {
     //peyda kardane ketab az roye name nevisande   
     public void searchWriter() {
 
+        String bookName = txt_searchbook.getText();
         String writer = txt_searchwriter.getText();
 
         try {
             Connection con = databaseconnection.getConnection();
-            String sql = "select writer from book_details where writer like ?";
+            String sql = "select * from book_details where writer like ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, "%" + writer + "%");
 
             ResultSet rs = ps.executeQuery();
 
-            DefaultTableModel model = (DefaultTableModel) tbl_writerSearch1.getModel();
+            DefaultTableModel model = (DefaultTableModel) tbl_bookSearch.getModel();
 
-            while (tbl_writerSearch1.getRowCount() > 0) {
+            while (tbl_bookSearch.getRowCount() > 0) {
                 model.removeRow(0);
             }
 
             while (rs.next()) {
-                model.addRow(new Object[]{rs.getString("writer")});
+                String bookId = rs.getString("book_id");
+                String bookNamee = rs.getString("Book_name");
+                String writerr = rs.getString("writer");
+                String quantity = rs.getString("quantity");
+
+                Object[] obj = {bookId, bookNamee, writerr, quantity};
+                model.addRow(obj);
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e);
+            JOptionPane.showMessageDialog(this, "Error");
         }
 
     }
@@ -91,14 +104,14 @@ public class Search extends javax.swing.JFrame {
         txt_searchwriter = new app.bolivia.swing.JCTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_bookSearch = new rojerusan.RSTableMetro();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tbl_writerSearch1 = new rojerusan.RSTableMetro();
         jPanel4 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        SearchByAutherName = new rojerusan.RSMaterialButtonCircle();
-        SearchbyBookName = new rojerusan.RSMaterialButtonCircle();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        Borrow = new rojerusan.RSMaterialButtonCircle();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -138,16 +151,13 @@ public class Search extends javax.swing.JFrame {
 
         jPanel1.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 50));
 
-        jLabel1.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel1.setText("Which Auther :");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 140, 130, 50));
+        jLabel1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 15)); // NOI18N
+        jLabel1.setText("go to this page");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 470, 130, 30));
 
         jLabel2.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 0, 51));
         jLabel2.setText("Which Book :");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 120, 50));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 130, 120, 50));
 
         txt_searchbook.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         txt_searchbook.addActionListener(new java.awt.event.ActionListener() {
@@ -155,7 +165,7 @@ public class Search extends javax.swing.JFrame {
                 txt_searchbookActionPerformed(evt);
             }
         });
-        jPanel1.add(txt_searchbook, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 150, 230, 40));
+        jPanel1.add(txt_searchbook, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 130, 330, 40));
 
         txt_searchwriter.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         txt_searchwriter.addActionListener(new java.awt.event.ActionListener() {
@@ -163,14 +173,14 @@ public class Search extends javax.swing.JFrame {
                 txt_searchwriterActionPerformed(evt);
             }
         });
-        jPanel1.add(txt_searchwriter, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 150, 240, 40));
+        jPanel1.add(txt_searchwriter, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 130, 360, 40));
 
         tbl_bookSearch.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Book Name"
+                "Book Id", "Book Name", "Writer", "Quantity"
             }
         ));
         tbl_bookSearch.setColorBackgoundHead(new java.awt.Color(102, 102, 255));
@@ -183,27 +193,7 @@ public class Search extends javax.swing.JFrame {
         tbl_bookSearch.setRowHeight(40);
         jScrollPane1.setViewportView(tbl_bookSearch);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 230, 470, 340));
-
-        tbl_writerSearch1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Writer"
-            }
-        ));
-        tbl_writerSearch1.setColorBackgoundHead(new java.awt.Color(102, 102, 255));
-        tbl_writerSearch1.setColorBordeFilas(new java.awt.Color(102, 102, 255));
-        tbl_writerSearch1.setColorFilasBackgound2(new java.awt.Color(255, 255, 255));
-        tbl_writerSearch1.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        tbl_writerSearch1.setFuenteFilas(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
-        tbl_writerSearch1.setFuenteFilasSelect(new java.awt.Font("Yu Gothic UI", 1, 20)); // NOI18N
-        tbl_writerSearch1.setFuenteHead(new java.awt.Font("Yu Gothic UI Semibold", 1, 20)); // NOI18N
-        tbl_writerSearch1.setRowHeight(40);
-        jScrollPane2.setViewportView(tbl_writerSearch1);
-
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 230, 490, 340));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 230, 860, 340));
 
         jPanel4.setBackground(new java.awt.Color(102, 102, 255));
         jPanel4.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -231,7 +221,7 @@ public class Search extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 0, 140, 50));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 0, 140, 50));
 
         jPanel5.setBackground(new java.awt.Color(255, 51, 51));
 
@@ -250,30 +240,33 @@ public class Search extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 25)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 51, 51));
-        jLabel4.setText("   Search Books");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 40, 210, 80));
+        jLabel4.setText("   Search Box");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 10, 210, 80));
 
-        SearchByAutherName.setBackground(new java.awt.Color(255, 51, 51));
-        SearchByAutherName.setText("Search");
-        SearchByAutherName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SearchByAutherNameActionPerformed(evt);
+        jLabel5.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        jLabel5.setText("Which Auther :");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 130, 130, 50));
+
+        jLabel6.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 15)); // NOI18N
+        jLabel6.setText("If You Want");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 420, 80, 30));
+
+        jLabel7.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 15)); // NOI18N
+        jLabel7.setText("get any Book ");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 440, 100, 40));
+
+        Borrow.setBackground(new java.awt.Color(255, 51, 51));
+        Borrow.setText("get book");
+        Borrow.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BorrowMouseClicked(evt);
             }
         });
-        jPanel1.add(SearchByAutherName, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 140, 110, 60));
+        jPanel1.add(Borrow, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 500, 140, 60));
 
-        SearchbyBookName.setBackground(new java.awt.Color(255, 51, 51));
-        SearchbyBookName.setText("Search");
-        SearchbyBookName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SearchbyBookNameActionPerformed(evt);
-            }
-        });
-        jPanel1.add(SearchbyBookName, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 140, 110, 60));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1240, 610));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 10, 1240, 610));
-
-        setSize(new java.awt.Dimension(1200, 600));
+        setSize(new java.awt.Dimension(1235, 611));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -292,20 +285,19 @@ public class Search extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_searchbookActionPerformed
 
     private void txt_searchwriterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_searchwriterActionPerformed
-        searchWriter();
+          searchWriter();
     }//GEN-LAST:event_txt_searchwriterActionPerformed
 
     private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
         System.exit(0);
     }//GEN-LAST:event_jPanel4MouseClicked
 
-    private void SearchByAutherNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchByAutherNameActionPerformed
-        searchWriter();
-    }//GEN-LAST:event_SearchByAutherNameActionPerformed
+    private void BorrowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BorrowMouseClicked
 
-    private void SearchbyBookNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchbyBookNameActionPerformed
-        searchBook();
-    }//GEN-LAST:event_SearchbyBookNameActionPerformed
+        LendingBookUser l = new LendingBookUser();
+        l.show();
+        this.hide();
+    }//GEN-LAST:event_BorrowMouseClicked
 
     /**
      * @param args the command line arguments
@@ -343,21 +335,21 @@ public class Search extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private rojerusan.RSMaterialButtonCircle SearchByAutherName;
-    private rojerusan.RSMaterialButtonCircle SearchbyBookName;
+    private rojerusan.RSMaterialButtonCircle Borrow;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private rojerusan.RSTableMetro tbl_bookSearch;
-    private rojerusan.RSTableMetro tbl_writerSearch1;
     private app.bolivia.swing.JCTextField txt_searchbook;
     private app.bolivia.swing.JCTextField txt_searchwriter;
     // End of variables declaration//GEN-END:variables

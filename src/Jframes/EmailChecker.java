@@ -5,7 +5,6 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 import javax.net.ssl.HttpsURLConnection;
 
 //this class will check that an Email is exist or not
@@ -55,7 +54,7 @@ public class EmailChecker {
             //the response_output contains many information and we need just one, smtp_check! and smtp_check maybe true or false
             //we neet go to the right position for checking smtp_check is 't'rue or 'f'alse
             char torf = ecc.charAt(ecc.indexOf("smtp_check") + 12);
-        
+        //smtp_check = true 
             if (torf == 't') {
                 isExist = true;
             } else if (torf == 'f') {

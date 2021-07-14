@@ -22,7 +22,7 @@ public class SignUp extends javax.swing.JFrame {
     //-----------------------------------------------------------------------------------------------------------------------------    
     //method to insert values into users tabale
     public void InsertSignupDetails() {
-        //Variables of class : name for username, pwd for user password, email for useremail and contact for user contact
+        //Variables of method : name for username, pwd for user password, email for useremail and contact for user contact
         String name = txt_username.getText();
         String pwd = txt_password.getText();
         String email = txt_email.getText();
@@ -53,14 +53,14 @@ public class SignUp extends javax.swing.JFrame {
             }
         } //if try throw any Exception of connecting to the database
         catch (Exception e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error");
         }
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------
     //method to prevent the user from entering incorrect values 
     public boolean ValidateSignup() {
-        //Variables of class : name for username, pwd for user password, email for useremail and contact for user contact
+        //Variables of method : name for username, pwd for user password, email for useremail and contact for user contact
         String name = txt_username.getText();
         String pwd = txt_password.getText();
         String email = txt_email.getText();

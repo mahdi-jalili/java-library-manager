@@ -28,13 +28,13 @@ public class LendingBookUser extends javax.swing.JFrame {
     //this method get bookId from user show status of book and student
     public void getBookDetail() {
 
-        int bookId = Integer.parseInt(txt_bookId.getText());
+        String bookName = txt_bookName.getText();
 
         try {
             Connection con = databaseconnection.getConnection();
             //query used for get all status of book in lending_book
-            PreparedStatement ps = con.prepareStatement("select * from book_details where book_id= ?");
-            ps.setInt(1, bookId);
+            PreparedStatement ps = con.prepareStatement("select * from book_details where book_name= ?");
+            ps.setString(1, bookName);
             ResultSet rs = ps.executeQuery();
 
             //set all of status of book in textboxes and show for user
@@ -94,16 +94,11 @@ public class LendingBookUser extends javax.swing.JFrame {
         //make a variable for result
         boolean isborrow = false;
 
-        int bookId = Integer.parseInt(txt_bookId.getText());
-        int studentId = Integer.parseInt(txt_studentId.getText());
         String bookName = lbl_bookname.getText();
+        int studentId = Integer.parseInt(txt_studentId.getText());
+        int bookId = Integer.parseInt(lbl_bookid.getText());
         String studentName = lbl_studentname.getText();
 
-        // bayad baraye estefade az class Date ketabkhoneye Date dar java.util ro import konim aval . 
-        //chon chizi ke on ghesmate taeiin konnade tarikh return mikone jozve date hastesh
-        //va baraye daryaft khoroji on az method getDatefecha estefade mishe
-        //chon date marbot be sql bayad az noe hamon sql bashe taghruban ye castt darim inja 
-        //chin java.sql.date long migire inkaro kardim
         //Hint : sql package returns Long type
         //should casting Date to Long
         Long d1 = currentDate.getTime();
@@ -145,14 +140,14 @@ public class LendingBookUser extends javax.swing.JFrame {
     //this method update number of book count
     public void updateBookcount() {
 
-        int bookId = Integer.parseInt(txt_bookId.getText());
+        String bookName = txt_bookName.getText();
 
         try {
             Connection con = databaseconnection.getConnection();
             //query used for update quantity of book in book_details table
-            String sql = "update book_details set quantity = quantity - 1 where book_id = ?";
+            String sql = "update book_details set quantity = quantity - 1 where book_name = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, bookId);
+            ps.setString(1, bookName);
 
             int rowCount = ps.executeUpdate();
 
@@ -165,19 +160,17 @@ public class LendingBookUser extends javax.swing.JFrame {
 
             } else {
                 JOptionPane.showMessageDialog(this, "can not update the Book count");
-
             }
-
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error");
         }
-
     }
 
     //this method checked status of lnding book status and check that book already lended or not
     public boolean isAlreadyBorrow() {
 
-        int bookId = Integer.parseInt(txt_bookId.getText());
+        String bookName = txt_bookName.getText();
         int studentId = Integer.parseInt(txt_studentId.getText());
 
         //make a variable for result
@@ -186,9 +179,9 @@ public class LendingBookUser extends javax.swing.JFrame {
         try {
             Connection con = databaseconnection.getConnection();
             //query to get book_id and student_id and status in lending_book table
-            String sql = "select * from lending_book where book_id = ? and student_id =? and status =? ";
+            String sql = "select * from lending_book where book_name = ? and student_id =? and status =? ";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, bookId);
+            ps.setString(1, bookName);
             ps.setInt(2, studentId);
             //this means the student has not return the book yet
             ps.setString(3, "pending");
@@ -296,7 +289,7 @@ public class LendingBookUser extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         txt_studentId = new app.bolivia.swing.JCTextField();
         retunrDateLabel = new javax.swing.JLabel();
-        txt_bookId = new app.bolivia.swing.JCTextField();
+        txt_bookName = new app.bolivia.swing.JCTextField();
         jLabel13 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
@@ -722,31 +715,31 @@ public class LendingBookUser extends javax.swing.JFrame {
         retunrDateLabel.setForeground(new java.awt.Color(0, 0, 204));
         main_panel.add(retunrDateLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 460, 160, 60));
 
-        txt_bookId.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 51, 51)));
-        txt_bookId.setToolTipText("");
-        txt_bookId.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        txt_bookId.setPlaceholder("Enter Book id...");
-        txt_bookId.addFocusListener(new java.awt.event.FocusAdapter() {
+        txt_bookName.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 51, 51)));
+        txt_bookName.setToolTipText("");
+        txt_bookName.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        txt_bookName.setPlaceholder("Enter Book Name...");
+        txt_bookName.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                txt_bookIdFocusLost(evt);
+                txt_bookNameFocusLost(evt);
             }
         });
-        txt_bookId.addActionListener(new java.awt.event.ActionListener() {
+        txt_bookName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_bookIdActionPerformed(evt);
+                txt_bookNameActionPerformed(evt);
             }
         });
-        main_panel.add(txt_bookId, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 230, 250, 40));
+        main_panel.add(txt_bookName, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 230, 250, 40));
 
         jLabel13.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 51, 51));
-        jLabel13.setText("Enter Book Id :");
-        main_panel.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 220, 160, 60));
+        jLabel13.setText("Enter Book Name :");
+        main_panel.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 220, 180, 60));
 
         jLabel19.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(255, 51, 51));
         jLabel19.setText("Enter Your Id :");
-        main_panel.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 300, 160, 60));
+        main_panel.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 300, 160, 60));
 
         jLabel20.setFont(new java.awt.Font("Verdana", 0, 17)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(255, 51, 51));
@@ -793,25 +786,25 @@ public class LendingBookUser extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel18MouseClicked
 
     private void txt_studentIdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_studentIdFocusLost
-        
+
     }//GEN-LAST:event_txt_studentIdFocusLost
 
     private void txt_studentIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_studentIdActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_studentIdActionPerformed
 
-    private void txt_bookIdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_bookIdFocusLost
+    private void txt_bookNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_bookNameFocusLost
         //if(txt_bookId.getText().equals("")){
         getBookDetail();
 
-    }//GEN-LAST:event_txt_bookIdFocusLost
+    }//GEN-LAST:event_txt_bookNameFocusLost
 
-    private void txt_bookIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_bookIdActionPerformed
+    private void txt_bookNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_bookNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_bookIdActionPerformed
+    }//GEN-LAST:event_txt_bookNameActionPerformed
 
     private void rSMaterialButtonCircle1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle1ActionPerformed
-      
+
         //check availability of book
         if (lbl_quantity.getText().equals("0")) {
             JOptionPane.showMessageDialog(this, "This Book Not Availible");
@@ -940,7 +933,7 @@ public class LendingBookUser extends javax.swing.JFrame {
     private javax.swing.JPanel main_panel;
     private rojerusan.RSMaterialButtonCircle rSMaterialButtonCircle1;
     private javax.swing.JLabel retunrDateLabel;
-    private app.bolivia.swing.JCTextField txt_bookId;
+    private app.bolivia.swing.JCTextField txt_bookName;
     private app.bolivia.swing.JCTextField txt_studentId;
     // End of variables declaration//GEN-END:variables
 }

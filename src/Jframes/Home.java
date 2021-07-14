@@ -173,6 +173,9 @@ public class Home extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         panel_records = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
+        panel_records1 = new javax.swing.JPanel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
         jPanel16 = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
         lbl_noOfBook = new javax.swing.JLabel();
@@ -406,7 +409,46 @@ public class Home extends javax.swing.JFrame {
         });
         panel_records.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 200, 40));
 
+        panel_records1.setBackground(new java.awt.Color(51, 51, 51));
+        panel_records1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel18.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 18)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/icons8_View_Details_26px.png"))); // NOI18N
+        jLabel18.setText("    View Records");
+        jLabel18.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel18MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel18MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel18MouseExited(evt);
+            }
+        });
+        panel_records1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 200, 40));
+
+        panel_records.add(panel_records1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 280, 60));
+
         jPanel3.add(panel_records, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 280, 60));
+
+        jLabel19.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 18)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/icons8_Conference_26px.png"))); // NOI18N
+        jLabel19.setText("    Show Books Status");
+        jLabel19.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel19MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel19MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel19MouseExited(evt);
+            }
+        });
+        jPanel3.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 520, 250, 50));
 
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 280, 580));
 
@@ -704,6 +746,32 @@ public class Home extends javax.swing.JFrame {
         this.hide();
     }//GEN-LAST:event_logoutMouseClicked
 
+    private void jLabel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseClicked
+        // TODO add your handling code here:
+        ShowLendingBook lending = new ShowLendingBook();
+        lending.show();
+    }//GEN-LAST:event_jLabel19MouseClicked
+
+    private void jLabel19MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseEntered
+        panel_records.setBackground(mousEntercolor);
+    }//GEN-LAST:event_jLabel19MouseEntered
+
+    private void jLabel19MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseExited
+        panel_records.setBackground(mouseExitColor);
+    }//GEN-LAST:event_jLabel19MouseExited
+
+    private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel18MouseClicked
+
+    private void jLabel18MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel18MouseEntered
+
+    private void jLabel18MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel18MouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -748,6 +816,8 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel23;
@@ -784,6 +854,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JPanel panel_managebook;
     private javax.swing.JPanel panel_managestudent;
     private javax.swing.JPanel panel_records;
+    private javax.swing.JPanel panel_records1;
     private javax.swing.JPanel panel_returnbook;
     private rojeru_san.complementos.RSTableMetro tbl_bookDetails;
     private rojeru_san.complementos.RSTableMetro tbl_studentDetails;

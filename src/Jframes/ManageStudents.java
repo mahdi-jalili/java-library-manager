@@ -134,7 +134,7 @@ public class ManageStudents extends javax.swing.JFrame {
 
         try {
             Connection con = databaseconnection.getConnection();
-            //query for delete the user in student_details by useing student_id
+            //query for delete the user in student_details by using student_id
             String sql = "delete from student_details where student_id= ?";
             PreparedStatement ps = con.prepareStatement(sql);
 
@@ -278,7 +278,7 @@ public class ManageStudents extends javax.swing.JFrame {
         txt_studentName.setBackground(new java.awt.Color(102, 102, 255));
         txt_studentName.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
         txt_studentName.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        txt_studentName.setPlaceholder("Enter Your Name...");
+        txt_studentName.setPlaceholder("Enter Student Name...");
         txt_studentName.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txt_studentNameFocusLost(evt);
@@ -467,7 +467,7 @@ public class ManageStudents extends javax.swing.JFrame {
 
     private void tbl_studentdetailsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_studentdetailsMouseClicked
 
-        // for show details of tabale in the textfields 
+        //for show details of tabale in the textfields 
         int rowNumber = tbl_studentdetails.getSelectedRow();
         TableModel model = tbl_studentdetails.getModel();
 

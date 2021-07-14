@@ -1,8 +1,10 @@
 package Jframes;
 
+/*
+in form be ma tamamie ketab haye amanat dade shode ro namayesh mide
+ */
+
 import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
@@ -15,9 +17,6 @@ import javax.swing.table.DefaultTableModel;
  */
 public class DoNotReturn extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Borrowed_Books
-     */
     DefaultTableModel model;
 
     public DoNotReturn() {
@@ -28,31 +27,22 @@ public class DoNotReturn extends javax.swing.JFrame {
     //to set the book details into the table
     public void setBorrowBookDetailsToTable() {
 
-        // zaman hal ro barmigardone
-        long l = System.currentTimeMillis();
-        Date todaysDate = new Date(l);
-
         try {
-
             Connection con = databaseconnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("select * from lending_book where return_book_datte < ? and status =?");
-            ps.setDate(1, todaysDate);
-            ps.setString(2, "pending");
+            Statement st = con.createStatement();
+            //query to get all books with pending status in lending_book table
+            ResultSet rs = st.executeQuery("select * from lending_book where status= '" + "pending" + "'");
 
-            ResultSet rs = ps.executeQuery();
-
+            //set all of status of books that in pending status, in textboxes and show for admin in a DefaultTableModel
             while (rs.next()) {
-
-                String id = rs.getString("id");
                 String bookName = rs.getString("book_name");
                 String studentName = rs.getString("student_name");
                 String lendingDate = rs.getString("borrow_date");
                 String returnDate = rs.getString("return_book_datte");
-                String status = rs.getString("status");
 
-                Object[] obj = {id, bookName, studentName, lendingDate, returnDate, status};
+                Object[] obj = {bookName, studentName, lendingDate, returnDate};
 
-                model = (DefaultTableModel) tbl_borrowBookDetails.getModel();
+                model = (DefaultTableModel) tbl_borrowBookDetails1.getModel();
                 model.addRow(obj);
 
             }
@@ -63,6 +53,14 @@ public class DoNotReturn extends javax.swing.JFrame {
         }
 
     }
+
+    //method to clear table      
+    public void clearTable() {
+        DefaultTableModel model = (DefaultTableModel) tbl_borrowBookDetails1.getModel();
+        //this means to clear all history in table
+        model.setRowCount(0);
+    }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -75,8 +73,9 @@ public class DoNotReturn extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tbl_borrowBookDetails = new rojeru_san.complementos.RSTableMetro();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tbl_borrowBookDetails1 = new rojeru_san.complementos.RSTableMetro();
+        FindallPendingBooks = new rojerusan.RSMaterialButtonCircle();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -88,8 +87,8 @@ public class DoNotReturn extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 25)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 51, 51));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/icons8_Edit_Property_50px.png"))); // NOI18N
-        jLabel2.setText("  Do Not Return");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 0, 320, 100));
+        jLabel2.setText("Books in pending status");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 0, 350, 100));
 
         jPanel17.setBackground(new java.awt.Color(255, 51, 51));
 
@@ -174,32 +173,41 @@ public class DoNotReturn extends javax.swing.JFrame {
 
         jPanel1.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 0, 150, 50));
 
-        tbl_borrowBookDetails.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_borrowBookDetails1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Id", "Book Name", "Student Name", "Lending Date", "Return Date", "Status"
+                "Book Name", "Student Name", "Lending Date", "Return Date"
             }
         ));
-        tbl_borrowBookDetails.setColorBackgoundHead(new java.awt.Color(102, 102, 255));
-        tbl_borrowBookDetails.setColorBordeFilas(new java.awt.Color(102, 102, 255));
-        tbl_borrowBookDetails.setColorFilasBackgound2(new java.awt.Color(255, 255, 255));
-        tbl_borrowBookDetails.setColorSelBackgound(new java.awt.Color(255, 51, 51));
-        tbl_borrowBookDetails.setFont(new java.awt.Font("Yu Gothic UI Light", 0, 25)); // NOI18N
-        tbl_borrowBookDetails.setFuenteFilas(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
-        tbl_borrowBookDetails.setFuenteFilasSelect(new java.awt.Font("Yu Gothic UI", 1, 20)); // NOI18N
-        tbl_borrowBookDetails.setFuenteHead(new java.awt.Font("Yu Gothic UI Semibold", 1, 20)); // NOI18N
-        tbl_borrowBookDetails.setIntercellSpacing(new java.awt.Dimension(0, 0));
-        tbl_borrowBookDetails.setRowHeight(40);
-        tbl_borrowBookDetails.addMouseListener(new java.awt.event.MouseAdapter() {
+        tbl_borrowBookDetails1.setColorBackgoundHead(new java.awt.Color(102, 102, 255));
+        tbl_borrowBookDetails1.setColorBordeFilas(new java.awt.Color(102, 102, 255));
+        tbl_borrowBookDetails1.setColorFilasBackgound2(new java.awt.Color(255, 255, 255));
+        tbl_borrowBookDetails1.setColorSelBackgound(new java.awt.Color(255, 51, 51));
+        tbl_borrowBookDetails1.setFont(new java.awt.Font("Yu Gothic UI Light", 0, 25)); // NOI18N
+        tbl_borrowBookDetails1.setFuenteFilas(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        tbl_borrowBookDetails1.setFuenteFilasSelect(new java.awt.Font("Yu Gothic UI", 1, 20)); // NOI18N
+        tbl_borrowBookDetails1.setFuenteHead(new java.awt.Font("Yu Gothic UI Semibold", 1, 20)); // NOI18N
+        tbl_borrowBookDetails1.setIntercellSpacing(new java.awt.Dimension(0, 0));
+        tbl_borrowBookDetails1.setRowHeight(40);
+        tbl_borrowBookDetails1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tbl_borrowBookDetailsMouseClicked(evt);
+                tbl_borrowBookDetails1MouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(tbl_borrowBookDetails);
+        jScrollPane3.setViewportView(tbl_borrowBookDetails1);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 150, 960, 400));
+        jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 960, 400));
+
+        FindallPendingBooks.setBackground(new java.awt.Color(102, 102, 255));
+        FindallPendingBooks.setText("Update");
+        FindallPendingBooks.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FindallPendingBooksActionPerformed(evt);
+            }
+        });
+        jPanel1.add(FindallPendingBooks, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 510, 310, 80));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 660));
 
@@ -208,7 +216,7 @@ public class DoNotReturn extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
-        Home h = new Home();
+        Home_user h = new Home_user();
         h.show();
         this.hide();
     }//GEN-LAST:event_jLabel10MouseClicked
@@ -228,9 +236,15 @@ public class DoNotReturn extends javax.swing.JFrame {
         this.hide();
     }//GEN-LAST:event_jPanel8MouseClicked
 
-    private void tbl_borrowBookDetailsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_borrowBookDetailsMouseClicked
+    private void tbl_borrowBookDetails1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_borrowBookDetails1MouseClicked
 
-    }//GEN-LAST:event_tbl_borrowBookDetailsMouseClicked
+    }//GEN-LAST:event_tbl_borrowBookDetails1MouseClicked
+
+    private void FindallPendingBooksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FindallPendingBooksActionPerformed
+        clearTable();
+        setBorrowBookDetailsToTable();
+
+    }//GEN-LAST:event_FindallPendingBooksActionPerformed
 
     /**
      * @param args the command line arguments
@@ -269,6 +283,7 @@ public class DoNotReturn extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private rojerusan.RSMaterialButtonCircle FindallPendingBooks;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel9;
@@ -276,7 +291,7 @@ public class DoNotReturn extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JScrollPane jScrollPane2;
-    private rojeru_san.complementos.RSTableMetro tbl_borrowBookDetails;
+    private javax.swing.JScrollPane jScrollPane3;
+    private rojeru_san.complementos.RSTableMetro tbl_borrowBookDetails1;
     // End of variables declaration//GEN-END:variables
 }

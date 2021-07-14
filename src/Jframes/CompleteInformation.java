@@ -182,6 +182,7 @@ public class CompleteInformation extends javax.swing.JFrame {
         combo_coursName = new javax.swing.JComboBox<>();
         rSMaterialButtonCircle2 = new rojerusan.RSMaterialButtonCircle();
         rSMaterialButtonCircle3 = new rojerusan.RSMaterialButtonCircle();
+        rSMaterialButtonCircle4 = new rojerusan.RSMaterialButtonCircle();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -236,7 +237,7 @@ public class CompleteInformation extends javax.swing.JFrame {
         txt_studentid.setBackground(new java.awt.Color(102, 102, 255));
         txt_studentid.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
         txt_studentid.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        txt_studentid.setPlaceholder("Enter Student id...");
+        txt_studentid.setPlaceholder("Enter Your id...");
         txt_studentid.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txt_studentidFocusLost(evt);
@@ -315,7 +316,7 @@ public class CompleteInformation extends javax.swing.JFrame {
                 rSMaterialButtonCircle2ActionPerformed(evt);
             }
         });
-        jPanel1.add(rSMaterialButtonCircle2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 490, 110, 70));
+        jPanel1.add(rSMaterialButtonCircle2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 470, 110, 70));
 
         rSMaterialButtonCircle3.setBackground(new java.awt.Color(255, 51, 51));
         rSMaterialButtonCircle3.setText("update");
@@ -324,7 +325,16 @@ public class CompleteInformation extends javax.swing.JFrame {
                 rSMaterialButtonCircle3ActionPerformed(evt);
             }
         });
-        jPanel1.add(rSMaterialButtonCircle3, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 490, 110, 70));
+        jPanel1.add(rSMaterialButtonCircle3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 470, 110, 70));
+
+        rSMaterialButtonCircle4.setBackground(new java.awt.Color(255, 51, 51));
+        rSMaterialButtonCircle4.setText("Reset Password");
+        rSMaterialButtonCircle4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rSMaterialButtonCircle4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(rSMaterialButtonCircle4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 530, 200, 60));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 600));
 
@@ -389,8 +399,8 @@ public class CompleteInformation extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 30)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 51, 51));
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/icons8_Student_Male_100px.png"))); // NOI18N
-        jLabel3.setText("   Manage Students");
-        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 60, 390, 110));
+        jLabel3.setText("   Complete Information");
+        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 70, 510, 110));
 
         jPanel5.setBackground(new java.awt.Color(255, 51, 51));
 
@@ -479,6 +489,13 @@ public class CompleteInformation extends javax.swing.JFrame {
 
     }//GEN-LAST:event_rSMaterialButtonCircle3ActionPerformed
 
+    private void rSMaterialButtonCircle4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle4ActionPerformed
+
+        ResetPassword rs = new ResetPassword();
+        rs.show();
+        this.hide();
+    }//GEN-LAST:event_rSMaterialButtonCircle4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -539,6 +556,7 @@ public class CompleteInformation extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private rojerusan.RSMaterialButtonCircle rSMaterialButtonCircle2;
     private rojerusan.RSMaterialButtonCircle rSMaterialButtonCircle3;
+    private rojerusan.RSMaterialButtonCircle rSMaterialButtonCircle4;
     private rojeru_san.complementos.RSTableMetro tbl_studentdetails;
     private app.bolivia.swing.JCTextField txt_studentName;
     private app.bolivia.swing.JCTextField txt_studentid;
