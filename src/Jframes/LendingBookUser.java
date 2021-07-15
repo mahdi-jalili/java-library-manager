@@ -53,36 +53,63 @@ public class LendingBookUser extends javax.swing.JFrame {
         }
     }
 
-    //for give information from database and display that in bookdetail text field
-    // public void getStudentDetail() {
-    //  int studentId = Integer.parseInt(txt_studentId.getText());
-    // }
     /*
+    //for give information from database and display that in bookdetail text field
+    public void getStudentDetail() {
+        int studentId = Integer.parseInt(txt_studentId.getText());
+
         try {
             Connection con = databaseconnection.getConnection();
 
             PreparedStatement ps = con.prepareStatement("select * from student_details where student_id= ?");
             ps.setInt(1, studentId);
             ResultSet rs = ps.executeQuery();
-           
+
             if (rs.next()) {
-                lbl_studentid.setText(rs.getString("student_id"));
-                lbl_studentname.setText(rs.getString("name"));
-                lbl_cours.setText(rs.getString("cours"));
-                lbl_branch.setText(rs.getString("branch"));
+                //    lbl_studentid.setText(rs.getString("student_id"));
+                //    lbl_studentname.setText(rs.getString("name"));
+                //    lbl_cours.setText(rs.getString("cours"));
+                //    lbl_branch.setText(rs.getString("branch"));     
+                lbl_studentError.setText("");
 
             } else {
                 lbl_studentError.setText("invalid Student id");
             }
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error");
         }
 
     }
      */
+
     //this method will lending book by user
     public boolean lendingBook() {
+        
+        String bookName = lbl_bookname.getText();
+        int studentId = Integer.parseInt(txt_studentId.getText());
+        int bookId = Integer.parseInt(lbl_bookid.getText());
+        String studentName = lbl_studentname.getText();
+
+        try {
+            Connection con = databaseconnection.getConnection();
+            //query to get all information of student in student_details table by student_id
+            PreparedStatement ps = con.prepareStatement("select * from student_details where student_id= ?");
+            ps.setInt(1, studentId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                //we just neew student_id and student_name
+                studentId = rs.getInt("student_id");
+                studentName = rs.getString("name");
+            } else {
+                JOptionPane.showMessageDialog(this, "invalid Student id");
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error");
+        }
+
         //using Calender class to plus 10 days for set deadline in continue
         Calendar cal = Calendar.getInstance();
         Date currentDate = new Date();
@@ -93,11 +120,6 @@ public class LendingBookUser extends javax.swing.JFrame {
 
         //make a variable for result
         boolean isborrow = false;
-
-        String bookName = lbl_bookname.getText();
-        int studentId = Integer.parseInt(txt_studentId.getText());
-        int bookId = Integer.parseInt(lbl_bookid.getText());
-        String studentName = lbl_studentname.getText();
 
         //Hint : sql package returns Long type
         //should casting Date to Long
@@ -161,7 +183,7 @@ public class LendingBookUser extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(this, "can not update the Book count");
             }
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error");
         }
@@ -518,7 +540,7 @@ public class LendingBookUser extends javax.swing.JFrame {
 
         jLabel41.setFont(new java.awt.Font("Yu Gothic UI", 0, 20)); // NOI18N
         jLabel41.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel41.setText("writer :");
+        jLabel41.setText("Writer :");
         jPanel7.add(jLabel41, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 120, 40));
 
         jLabel42.setFont(new java.awt.Font("Yu Gothic UI", 0, 20)); // NOI18N
@@ -532,7 +554,7 @@ public class LendingBookUser extends javax.swing.JFrame {
 
         lbl_bookid.setFont(new java.awt.Font("Yu Gothic UI", 0, 20)); // NOI18N
         lbl_bookid.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel7.add(lbl_bookid, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 280, 220, 40));
+        jPanel7.add(lbl_bookid, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 280, 220, 40));
 
         jLabel45.setFont(new java.awt.Font("Yu Gothic UI", 0, 20)); // NOI18N
         jLabel45.setForeground(new java.awt.Color(255, 255, 255));

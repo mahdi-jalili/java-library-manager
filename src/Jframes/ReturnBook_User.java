@@ -101,7 +101,7 @@ public class ReturnBook_User extends javax.swing.JFrame {
         try {
             Connection con = databaseconnection.getConnection();
             //query used for update quantity of book in book_details table
-            String sql = "update book_details set quantity = quantity + 1 where book_name = ?";
+            String sql = "update book_details set quantity = quantity + 1 where book_name = ? ";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, bookName);
 

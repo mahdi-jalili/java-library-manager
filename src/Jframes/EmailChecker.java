@@ -49,12 +49,12 @@ public class EmailChecker {
         
         //make a variable for result
         boolean isExist = false;
+        //asdhfasghdfaghdfaghfdghafdghafdhfaghdfadghfaghdfahdfaghdfhadf smtp_check=false sdfsfsfsfg
         try {
             String ecc = this.getResponse(email);
             //the response_output contains many information and we need just one, smtp_check! and smtp_check maybe true or false
             //we neet go to the right position for checking smtp_check is 't'rue or 'f'alse
             char torf = ecc.charAt(ecc.indexOf("smtp_check") + 12);
-        //smtp_check = true 
             if (torf == 't') {
                 isExist = true;
             } else if (torf == 'f') {

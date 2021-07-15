@@ -488,7 +488,7 @@ public class LendingBook extends javax.swing.JFrame {
 
         jLabel41.setFont(new java.awt.Font("Yu Gothic UI", 0, 20)); // NOI18N
         jLabel41.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel41.setText("writer :");
+        jLabel41.setText("Writer :");
         jPanel7.add(jLabel41, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 120, 40));
 
         jLabel42.setFont(new java.awt.Font("Yu Gothic UI", 0, 20)); // NOI18N

@@ -61,18 +61,14 @@ public class ResetPassword extends javax.swing.JFrame {
         try {
             Connection con = databaseconnection.getConnection();
             //used query for name and password in user table
-            //         String sql = "update users set password = '" + "newPwd" + "' where name = ?";
-            String sql = " update users set password = ? where name=?";
+            String sql = " update users set password = ? where name=? and password = ?";
 
             PreparedStatement ps = con.prepareStatement(sql);
 
             ps.setString(1, newPwd);
             ps.setString(2, name);
+            ps.setString(3, oldPwd);
 
-            //    ps.setString(2, oldPwd);
-            //    ps.setString(2, oldPwd);
-            //set "name of user" in uN
-            //  uN = txt_username.getText();
             int ResultSet = ps.executeUpdate();
 
             //this means theere is this username and password in our databas            
@@ -86,7 +82,6 @@ public class ResetPassword extends javax.swing.JFrame {
             }
 
         } catch (Exception e) {
-            System.out.println(e);
             JOptionPane.showMessageDialog(this, "Error");
         }
 
